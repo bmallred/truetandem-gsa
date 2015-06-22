@@ -9,6 +9,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func init() {
+    
+	log.Print("Configuring environment")
+	time.Local = time.UTC
+
+	r := mux.NewRouter().StrictSlash(false)
+	r.HandleFunc("/", controllers.DefaultIndex)
+	r.HandleFunc("/contact", controllers.DefaultContact)
+        http.Handle("/", r)
+}
+
 func main() {
 	log.Print("Configuring environment")
 	time.Local = time.UTC
