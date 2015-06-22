@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bmallred/gsa/controllers"
+	"github.com/bmallred/truetandem-gsa/controllers"
 	"github.com/gorilla/mux"
 )
 
