@@ -1,4 +1,4 @@
-// +build !appengine
+// +build appengine
 
 package main
 
@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bmallred/truetandem-gsa/controllers"
+	// Butchered this path to get it to work with AppEngine requirements
+	"controllers"
 )
 
 func init() {
