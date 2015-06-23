@@ -1,23 +1,79 @@
 {{ define "title" }}GSA - Analyze Food Recalls{{ end }}
 {{ define "styles" }}
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<style>
+		.table-hover td {
+			cursor: pointer;
+		}
+	</style>
 {{ end }}
 {{ define "content" }}
+<div class="container">
+	<div class="row" style="margin-top:60px;">
+		<div class="col-xs-8">
+			<table id="grid" class="table table-hover">
+			    <thead>
+			        <tr>
+			            <th>Recall Number</th>
+			            <th>Firm</th>
+			            <th>State</th>
+			        </tr>
+			    </thead>
+			</table>
+		</div>
+		<div class="col-xs-4">
+			<div id="details_section">
 
-<table id="grid" class="display" style="margin-top:100px;">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-        </tr>
-    </thead>
-</table>
+			</div>
+			<div id="map-canvas" style="height:300px;width:100%;"></div>	
+		</div>
+	</div>
+</div>
 
 {{ end }}
 {{ define "scripts" }}
+
+<script type="javascript/template" id="details_template">
+	<div>
+		<div class="pull-right">
+				<span class="badge"><% status %></span>
+		</div>	
+		<div>
+			<h3><% recall_number %></h3>
+			<div>
+				<small><% recall_initiation_date %></small>
+			</div>		
+		</div>
+		<div>
+			<strong>Product Type</strong>
+			<div><% product_type %></div>
+		</div>		
+		<div>
+			<strong>Product Quantity</strong>
+			<div><% product_quantity %></div>
+		</div>
+		<div>
+			<strong>Distribution Pattern</strong>
+			<div><% distribution_pattern %></div>
+		</div>				
+		<div>
+			<strong>Reason for Recall</strong>
+			<p>
+				<% reason_for_recall %>
+			</p>
+		</div>		
+	</div>	
+</script>
+<!-- Google Maps -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<!-- Hoganjs -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js" />
 <!-- jQuery -->
 <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
 <script type="text/javascript" src="/static/js/food-recalls.js"></script>
 
 {{ end }}
