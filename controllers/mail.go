@@ -5,11 +5,12 @@ package controllers
 import (
 	"bytes"
 	"log"
+	"net/http"
 	"net/smtp"
 )
 
 // sendEmail without the AppEngine libraries.
-func sendEmail(from, to, subject, body string) {
+func sendEmail(r *http.Request, from, to, subject, body string) {
 	c, err := smtp.Dial("smtp.gmail.com:25")
 	if err != nil {
 		log.Println("[ERROR] Could not connect to the mail server:", err)
