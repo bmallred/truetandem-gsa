@@ -43,9 +43,9 @@ build:
             name: go test
             code: |
                 go test ./...
-deploy:
-    steps:
-        - setup-go-workspace
-        - pjvds/go-appengine-deploy:
-            email: bryan.allred@gmail.com
-            password: $APP_ENG_PASS
+# deploy:
+#     steps:
+#         - setup-go-workspace
+#         - pjvds/go-appengine-deploy:
+#             email: bryan.allred@gmail.com
+#             password: $APP_ENG_PASS
