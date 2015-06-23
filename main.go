@@ -8,22 +8,19 @@ import (
 	"github.com/bmallred/truetandem-gsa/controllers"
 )
 
-// func init() {
-// 	time.Local = time.UTC
-//
-// 	http.HandleFunc("/", controllers.DefaultIndex)
-// 	http.HandleFunc("/contact", controllers.DefaultContact)
-// 	http.Handle("/", nil)
-// }
-
-func main() {
+func init() {
 	log.Print("Configuring environment")
 	time.Local = time.UTC
+	bindRoutes()
+}
 
+func main() {
+	log.Println("Serving content on", "http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func bindRoutes() {
 	http.HandleFunc("/", controllers.DefaultIndex)
 	http.HandleFunc("/contact", controllers.DefaultContact)
 	http.HandleFunc("/analytics", controllers.AnalyticsIndex)
-
-	log.Println("Serving content on", "http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
