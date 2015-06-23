@@ -6,20 +6,13 @@ import (
 	"net/http"
 )
 
-var (
-	templateDefaultIndex = template.Must(template.ParseFiles(
+// DefaultIndex renders the default page of the default controller.
+func DefaultIndex(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
 		"html/master.html",
 		"html/defaultIndex.html",
 	))
-	templateDefaultContact = template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/defaultContact.html",
-	))
-)
-
-// DefaultIndex renders the default page of the default controller.
-func DefaultIndex(w http.ResponseWriter, r *http.Request) {
-	if err := templateDefaultIndex.Execute(w, nil); err != nil {
+	if err := t.Execute(w, nil); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -27,7 +20,11 @@ func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 
 // DefaultContact renders the contact page for the default controller.
 func DefaultContact(w http.ResponseWriter, r *http.Request) {
-	if err := templateDefaultContact.Execute(w, nil); err != nil {
+	t := template.Must(template.ParseFiles(
+		"html/master.html",
+		"html/defaultContact.html",
+	))
+	if err := t.Execute(w, nil); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
