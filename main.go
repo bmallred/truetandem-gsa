@@ -6,28 +6,24 @@ import (
 	"time"
 
 	"github.com/bmallred/truetandem-gsa/controllers"
-	"github.com/gorilla/mux"
 )
 
-func init() {
-    
-	log.Print("Configuring environment")
-	time.Local = time.UTC
-
-	r := mux.NewRouter().StrictSlash(false)
-	r.HandleFunc("/", controllers.DefaultIndex)
-	r.HandleFunc("/contact", controllers.DefaultContact)
-        http.Handle("/", r)
-}
+// func init() {
+// 	time.Local = time.UTC
+//
+// 	http.HandleFunc("/", controllers.DefaultIndex)
+// 	http.HandleFunc("/contact", controllers.DefaultContact)
+// 	http.Handle("/", nil)
+// }
 
 func main() {
 	log.Print("Configuring environment")
 	time.Local = time.UTC
 
-	r := mux.NewRouter().StrictSlash(false)
-	r.HandleFunc("/", controllers.DefaultIndex)
-	r.HandleFunc("/contact", controllers.DefaultContact)
+	http.HandleFunc("/", controllers.DefaultIndex)
+	http.HandleFunc("/contact", controllers.DefaultContact)
+	http.HandleFunc("/analytics", controllers.AnalyticsIndex)
 
-	log.Println("Serving content on", "localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Println("Serving content on", "http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
