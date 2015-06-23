@@ -12,6 +12,7 @@ func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 		"html/master.html",
 		"html/defaultIndex.html",
 	))
+
 	if err := t.Execute(w, nil); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -20,13 +21,27 @@ func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 
 // DefaultContact renders the contact page for the default controller.
 func DefaultContact(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/defaultContact.html",
-	))
-	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	email := r.FormValue("email")
+	message := r.FormValue("message")
+
+	if email == "" || message == "" {
+		t := template.Must(template.ParseFiles(
+			"html/master.html",
+			"html/defaultContact.html",
+		))
+
+		if err := t.Execute(w, nil); err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		// Use AppEngine to send our thank you cards
+		from := "TrueTandem LLC <sales@truetandem.com>"
+		subj := "TrueTandem LLC <sales@truetandem.com>"
+		body := "We appreciate your feedback and will get back to you quickly as possible!"
+		sendEmail(from, email, subj, body)
+
+		http.Redirect(w, r, "/thank-you", http.StatusSeeOther)
 	}
 }
 
@@ -35,6 +50,7 @@ func DefaultThankYou(w http.ResponseWriter, r *http.Request) {
 		"html/master.html",
 		"html/defaultThankYou.html",
 	))
+
 	if err := t.Execute(w, nil); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
