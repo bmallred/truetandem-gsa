@@ -19,6 +19,19 @@ func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DefaultOrganization renders the organization page of the default controller.
+func DefaultOrganization(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"html/master.html",
+		"html/defaultOrganization.html",
+	))
+
+	if err := t.Execute(w, nil); err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 // DefaultContact renders the contact page for the default controller.
 func DefaultContact(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")

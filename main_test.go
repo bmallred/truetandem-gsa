@@ -19,6 +19,15 @@ func TestDefaultIndex(t *testing.T) {
 	}
 }
 
+func TestDefaultOrganization(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(controllers.DefaultOrganization))
+	defer server.Close()
+
+	if resp, err := http.DefaultClient.Get(server.URL); err != nil || resp.StatusCode != http.StatusOK {
+		t.FailNow()
+	}
+}
+
 func TestDefaultContact(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(controllers.DefaultContact))
 	defer server.Close()

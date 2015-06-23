@@ -1,0 +1,109 @@
+{{ define "title" }}GSA - Organization{{ end }}
+{{ define "styles" }}
+<style type="text/css">
+    .vertical-align {
+        display: table;
+    }
+
+    .vertical-align div {
+        display: table-cell;
+        vertical-align: middle;
+        float: none;
+    }
+
+    .profile {
+        position: relative;
+    }
+    .profile img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+    }
+    .profile-caption {
+        opacity: 0.8;
+        z-index: -1;
+    }
+</style>
+{{ end }}
+{{ define "content" }}
+<div class="row">
+    <div class="col-xs-12 text-center bg-gray" style="padding: 4em 0">
+        <h1>Organization</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-8" style="padding: 3em 0;">
+        <h3>Get in touch</h3>
+        <p>Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+        eam. Alia assueverit scripserit at eum, mel cu vidit consul, eu insolens
+        periculis usu.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
+        <img src="/static/img/blank.png" />
+        <div class="profile-caption" style="display: none;">
+            <h4>Name Here</h4>
+            <p>Title</p>
+        </div>
+    </div>
+</div>
+{{ end }}
+{{ define "scripts" }}
+<script type="text/javascript">
+    $(function () {
+        $(document).on('mouseenter', '.profile', function (event) {
+            $(this).toggleClass('bg-gray');
+            $(this).toggleClass('bg-orange');
+            $(this).children('.profile-caption').show();
+        });
+
+        $(document).on('mouseleave', '.profile', function (event) {
+            $(this).toggleClass('bg-gray');
+            $(this).toggleClass('bg-orange');
+            $(this).children('.profile-caption').hide();
+        });
+    });
+</script>
+{{ end }}

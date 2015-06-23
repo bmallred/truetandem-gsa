@@ -25,5 +25,6 @@ func bindRoutes() {
 	http.HandleFunc("/thank-you", controllers.DefaultThankYou)
 	http.HandleFunc("/analytics", controllers.AnalyticsIndex)
 	http.HandleFunc("/food-recalls", controllers.FoodRecalls)
+	http.HandleFunc("/organization", controllers.DefaultOrganization)
 	http.HandleFunc("/static/", controllers.StaticFiles)
 }
