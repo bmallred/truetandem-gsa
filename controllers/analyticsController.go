@@ -28,3 +28,14 @@ func FoodRecalls(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func EnforcementReporting(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"html/master.html",
+		"html/enforcement-reporting.html",
+	))
+	if err := t.Execute(w, nil); err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}

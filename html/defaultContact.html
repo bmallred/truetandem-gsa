@@ -1,15 +1,31 @@
 {{ define "title" }}GSA - Contact{{ end }}
 {{ define "styles" }}
 <style type="text/css">
+    .vertical-align {
+        display: table;
+    }
+
+    .vertical-align div {
+        display: table-cell;
+        vertical-align: middle;
+        float: none;
+    }
+
     .icon-heading {
         margin-top: 5em;
         margin-bottom: 1em;
     }
+
+    #spotlight {
+        background-image: url('/static/img/feature.jpg');
+        background-position: center;
+        height: 40vh;
+    }
 </style>
 {{ end }}
 {{ define "content" }}
-<div class="row">
-    <div class="col-xs-12 text-center bg-gray" style="padding: 4em 0">
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
         <h1>Contact</h1>
     </div>
 </div>

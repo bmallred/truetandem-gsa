@@ -14,6 +14,7 @@
     .profile {
         position: relative;
     }
+
     .profile img {
         position: absolute;
         left: 0;
@@ -21,15 +22,22 @@
         width: 100%;
         height: auto;
     }
+
     .profile-caption {
         opacity: 0.8;
         z-index: -1;
     }
+
+    #spotlight {
+        background-image: url('/static/img/feature.jpg');
+        background-position: center;
+        height: 40vh;
+    }
 </style>
 {{ end }}
 {{ define "content" }}
-<div class="row">
-    <div class="col-xs-12 text-center bg-gray" style="padding: 4em 0">
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
         <h1>Organization</h1>
     </div>
 </div>
