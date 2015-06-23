@@ -52,7 +52,7 @@ func DefaultContact(w http.ResponseWriter, r *http.Request) {
 		from := "TrueTandem LLC <sales@truetandem.com>"
 		subj := "TrueTandem LLC <sales@truetandem.com>"
 		body := "We appreciate your feedback and will get back to you quickly as possible!"
-		sendEmail(from, email, subj, body)
+		sendEmail(r, from, email, subj, body)
 
 		http.Redirect(w, r, "/thank-you", http.StatusSeeOther)
 	}
