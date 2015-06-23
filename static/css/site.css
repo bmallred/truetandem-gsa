@@ -1,32 +1,116 @@
 /* Colors */
-.fg-teal {
-    color: #7eb70;
+.fg-teal,
+.fg-teal a:link,
+.fg-teal a:hover,
+.fg-teal a:visited {
+    color: #7eb7b0 !important;
 }
 
-.fg-white {
-    color: #fff;
+.fg-white,
+.fg-white a:link,
+.fg-white a:hover,
+.fg-white a:visited {
+    color: #fff !important;
 }
 
-.fg-yellow {
-    color: #f5de74;
+.fg-yellow,
+.fg-yellow a:link,
+.fg-yellow a:hover,
+.fg-yellow a:visited {
+    color: #f5de74 !important;
 }
 
-.fg-orange {
-    color: #e29a75;
+.fg-orange,
+.fg-orange a:link,
+.fg-orange a:hover,
+.fg-orange a:visited {
+    color: #e29a75 !important;
 }
 
-.bg-teal {
-    background-color: #7eb70;
+.fg-gray,
+.fg-gray a:link,
+.fg-gray a:hover,
+.fg-gray a:visited {
+    color: #cfcece !important;
 }
 
-.bg-white {
-    background-color: #fff;
+.fg-gray-2,
+.fg-gray-2 a:link,
+.fg-gray-2 a:hover,
+.fg-gray-2 a:visited {
+    color: #c8c8c8 !important;
 }
 
-.bg-yellow {
-    background-color: #f5de74;
+.fg-black,
+.fg-black a:link,
+.fg-black a:hover,
+.fg-black a:visited {
+    color: #000 !important;
 }
 
-.bg-orange {
-    background-color: #e29a75;
+.bg-teal,
+.bg-teal a:link,
+.bg-teal a:hover,
+.bg-teal a:visited {
+    background-color: #7eb7b0 !important;
+}
+
+.bg-white,
+.bg-white a:link,
+.bg-white a:hover,
+.bg-white a:visited {
+    background-color: #fff !important;
+}
+
+.bg-yellow,
+.bg-yellow a:link,
+.bg-yellow a:hover,
+.bg-yellow a:visited {
+    background-color: #f5de74 !important;
+}
+
+.bg-orange,
+.bg-orange a:link,
+.bg-orange a:hover,
+.bg-orange a:visited {
+    background-color: #e29a75 !important;
+}
+
+.bg-gray,
+.bg-gray a:link,
+.bg-gray a:hover,
+.bg-gray a:visited {
+    background-color: #cfcece !important;
+}
+
+.bg-dark-gray,
+.bg-dark-gray a:link,
+.bg-dark-gray a:hover,
+.bg-dark-gray a:visited {
+    background-color: #373938 !important;
+}
+
+/* Basic visual formatting */
+.no-bullets {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.list-inline > li {
+    display: inline-block;
+}
+
+/* Twitter Bootstrap overrides */
+body {
+    font-size: 12px;
+}
+
+.h4, h4 {
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+.footer {
+    padding: 5em;
 }
