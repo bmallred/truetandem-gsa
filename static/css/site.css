@@ -1,0 +1,32 @@
+/* Colors */
+.fg-teal {
+    color: #7eb70;
+}
+
+.fg-white {
+    color: #fff;
+}
+
+.fg-yellow {
+    color: #f5de74;
+}
+
+.fg-orange {
+    color: #e29a75;
+}
+
+.bg-teal {
+    background-color: #7eb70;
+}
+
+.bg-white {
+    background-color: #fff;
+}
+
+.bg-yellow {
+    background-color: #f5de74;
+}
+
+.bg-orange {
+    background-color: #e29a75;
+}
