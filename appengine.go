@@ -13,5 +13,6 @@ func init() {
 	http.HandleFunc("/", controllers.DefaultIndex)
 	http.HandleFunc("/contact", controllers.DefaultContact)
 	http.HandleFunc("/analytics", controllers.AnalyticsIndex)
+	http.HandleFunc("/enforcement-reporting", controllers.EnforcementReporting)
 	http.HandleFunc("/static/", controllers.StaticFiles)
 }
