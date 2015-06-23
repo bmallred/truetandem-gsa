@@ -29,3 +29,14 @@ func DefaultContact(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func DefaultThankYou(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"html/master.html",
+		"html/defaultThankYou.html",
+	))
+	if err := t.Execute(w, nil); err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
