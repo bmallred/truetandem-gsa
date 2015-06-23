@@ -13,23 +13,49 @@
 
     .profile {
         position: relative;
+        padding: 0;
     }
-    .profile img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
-    }
+
     .profile-caption {
         opacity: 0.8;
         z-index: -1;
     }
+
+    .bethany {
+        background-image: url('/static/img/bethany.jpg');
+        background-position: center;
+    }
+    .joey {
+        background-image: url('/static/img/joey.jpg');
+        background-position: center;
+    }
+    .john {
+        background-image: url('/static/img/john.jpg');
+        background-position: center;
+    }
+    .krystal {
+        background-image: url('/static/img/krystal.jpg');
+        background-position: center;
+    }
+    .paul {
+        background-image: url('/static/img/paul.jpg');
+        background-position: center;
+    }
+    .sara {
+        background-image: url('/static/img/sara.jpg');
+        background-position: center;
+    }
+
+    #spotlight {
+        background-image: url('/static/img/feature.jpg');
+        background-position: center;
+        height: 40vh;
+    }
 </style>
 {{ end }}
 {{ define "content" }}
-<div class="row">
-    <div class="col-xs-12 text-center bg-gray" style="padding: 4em 0">
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
         <h1>Organization</h1>
     </div>
 </div>
@@ -44,46 +70,40 @@
     </div>
 </div>
 <div class="row">
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white sara" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
     </div>
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white joey" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
     </div>
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white paul" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white bethany" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
     </div>
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white john" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
     </div>
-    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white" style="height: 30em;">
-        <img src="/static/img/blank.png" />
-        <div class="profile-caption" style="display: none;">
+    <div class="profile col-xs-4 text-center vertical-align bg-gray fg-white krystal" style="height: 24em;">
+        <div class="profile-caption bg-orange" style="display: none;">
             <h4>Name Here</h4>
             <p>Title</p>
         </div>
