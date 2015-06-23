@@ -1,7 +1,72 @@
 {{ define "title" }}GSA - Contact{{ end }}
 {{ define "styles" }}
+<style type="text/css">
+    .icon-heading {
+        margin-top: 5em;
+        margin-bottom: 1em;
+    }
+</style>
 {{ end }}
 {{ define "content" }}
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <h1>Contact</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Get in touch</h3>
+        <p>Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+        eam. Alia assueverit scripserit at eum, mel cu vidit consul, eu insolens
+        periculis usu.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4 text-center">
+        <div class="icon-heading"><i class="fa fa-4x fa-envelope-o"></i></div>
+        <p>Send a note to <a href="mailto:sales@truetandem.com">sales@truetandem.com</a></p>
+    </div>
+    <div class="col-xs-4 text-center">
+        <div class="icon-heading"><i class="fa fa-4x fa-phone"></i></div>
+        <p>Give us a ring at <a href="tel:17038896003">1.703.889.6003</a></p>
+    </div>
+    <div class="col-xs-4 text-center">
+        <div class="icon-heading"><i class="fa fa-4x fa-globe"></i></div>
+        <p>Visit the group at <a href="http://www.truetandem.com">truetandem.com</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+        <h3>Give us a shout!</h3>
+        <form action="/contact" method="post">
+            <div class="form-group">
+                <label class="control-label">Your e-mail address</label>
+                <input name="email" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">A quick message...</label>
+                <textarea name="message" class="form-control" style="20em"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary pull-right" value="Send" />
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 col-xs-12 text-center">
+        <hr />
+        <h3>Main Office</h3>
+        <p>
+            GSA Administrative Offices<br />
+            12345 East Western Street<br />
+            Washington, DC 22222
+        </p>
+        <hr />
+    </div>
+</div>
 {{ end }}
 {{ define "scripts" }}
 {{ end }}
