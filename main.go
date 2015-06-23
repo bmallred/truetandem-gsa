@@ -10,13 +10,11 @@ import (
 	"github.com/bmallred/truetandem-gsa/controllers"
 )
 
-func init() {
+func main() {
 	log.Print("Configuring environment")
 	time.Local = time.UTC
 	bindRoutes()
-}
 
-func main() {
 	log.Println("Serving content on", "http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
