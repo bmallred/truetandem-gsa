@@ -1,6 +1,6 @@
 // +build appengine
 
-package controllers
+package main
 
 import (
 	"log"

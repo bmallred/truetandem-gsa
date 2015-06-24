@@ -1,29 +1,27 @@
-// +build !appengine
-
 package main
 
 import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/bmallred/truetandem-gsa/controllers"
 )
 
-func main() {
-	log.Print("Configuring environment")
+// init congigures the routes used for Google AppEngine.
+func init() {
 	time.Local = time.UTC
 
-	// Configure HTTP routing for the application
-	http.HandleFunc("/", controllers.DefaultIndex)
-	http.HandleFunc("/contact", controllers.DefaultContact)
-	http.HandleFunc("/thank-you", controllers.DefaultThankYou)
-	http.HandleFunc("/analytics", controllers.AnalyticsIndex)
-	http.HandleFunc("/food-recalls", controllers.FoodRecalls)
-	http.HandleFunc("/organization", controllers.DefaultOrganization)
-	http.HandleFunc("/enforcement-reporting", controllers.EnforcementReporting)
-	http.HandleFunc("/static/", controllers.StaticFiles)
+	http.HandleFunc("/", DefaultIndex)
+	http.HandleFunc("/contact", DefaultContact)
+	http.HandleFunc("/thank-you", DefaultThankYou)
+	http.HandleFunc("/analytics", AnalyticsIndex)
+	http.HandleFunc("/food-recalls", FoodRecalls)
+	http.HandleFunc("/organization", DefaultOrganization)
+	http.HandleFunc("/enforcement-reporting", EnforcementReporting)
+	http.HandleFunc("/static/", StaticFiles)
+}
 
+// main executes the normal command execution.
+func main() {
 	log.Println("Serving content on", "http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
