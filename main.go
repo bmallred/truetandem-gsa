@@ -17,6 +17,7 @@ func init() {
 	http.HandleFunc("/food-recalls", FoodRecalls)
 	http.HandleFunc("/organization", DefaultOrganization)
 	http.HandleFunc("/enforcement-reporting", EnforcementReporting)
+	http.HandleFunc("/adverse-events", AdverseEvents)
 	http.HandleFunc("/static/", StaticFiles)
 }
 

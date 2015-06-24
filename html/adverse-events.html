@@ -1,0 +1,81 @@
+{{ define "title" }}GSA - Adverse Events{{ end }}
+{{ define "styles" }}
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<style>
+		.table-hover td {
+			cursor: pointer;
+		}
+	</style>
+{{ end }}
+{{ define "content" }}
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+        <h1>Adverse Events</h1>
+        <p>Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+        eam.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-sm-2 col-xs-12">
+        <!-- TODO: Pie chart -->
+    </div>
+    <div class="col-md-9 col-sm-10 col-xs-12">
+        <!-- TODO: Line chart -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-8">
+        <table id="grid" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Safety Report</th>
+                    <th>Medicine</th>
+                    <th>Reactions</th>
+                    <th>Received By</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{ end }}
+{{ define "scripts" }}
+<script type="javascript/template" id="details_template">
+	<div>
+		<div class="pull-right">
+				<span class="badge"><% status %></span>
+		</div>
+		<div>
+			<h3><% recall_number %></h3>
+			<div>
+				<small><% recall_initiation_date %></small>
+			</div>
+		</div>
+		<div>
+			<strong>Product Type</strong>
+			<div><% product_type %></div>
+		</div>
+		<div>
+			<strong>Product Quantity</strong>
+			<div><% product_quantity %></div>
+		</div>
+		<div>
+			<strong>Distribution Pattern</strong>
+			<div><% distribution_pattern %></div>
+		</div>
+		<div>
+			<strong>Reason for Recall</strong>
+			<p>
+				<% reason_for_recall %>
+			</p>
+		</div>
+	</div>
+</script>
+<script type="text/javascript" charset="utf8" src="//maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/js/adverse-events.js"></script>
+{{ end }}

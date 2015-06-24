@@ -35,3 +35,13 @@ func TestEnforcementReporting(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+// TestAdverseEvents checks for a valid response from the handler.
+func TestAdverseEvents(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(AdverseEvents))
+	defer server.Close()
+
+	if resp, err := http.DefaultClient.Get(server.URL); err != nil || resp.StatusCode != http.StatusOK {
+		t.FailNow()
+	}
+}
