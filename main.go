@@ -13,7 +13,7 @@ func init() {
 	http.HandleFunc("/", DefaultIndex)
 	http.HandleFunc("/contact", DefaultContact)
 	http.HandleFunc("/thank-you", DefaultThankYou)
-	http.HandleFunc("/analytics", AnalyticsIndex)
+	http.HandleFunc("/analytics", FoodRecalls)
 	http.HandleFunc("/food-recalls", FoodRecalls)
 	http.HandleFunc("/organization", DefaultOrganization)
 	http.HandleFunc("/enforcement-reporting", EnforcementReporting)
