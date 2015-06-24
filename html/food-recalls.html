@@ -9,7 +9,8 @@
 {{ end }}
 {{ define "content" }}
 <div class="container">
-	<div class="row" style="margin-top:60px;">
+    <h1 class="page-header">Food Recalls</h1>
+	<div class="row">
 		<div class="col-xs-8">
 			<table id="grid" class="table table-hover">
 			    <thead>
@@ -40,18 +41,52 @@
 		</div>	
 		<div>
 			<h3><% recall_number %></h3>
-			<div>
-				<small><% recall_initiation_date %></small>
-			</div>		
+		
 		</div>
-		<div>
-			<strong>Product Type</strong>
-			<div><% product_type %></div>
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Company</strong>
+                <div><% recalling_firm %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Product Type</strong>
+                <div><% product_type %></div>
+		    </div>		    
 		</div>		
-		<div>
-			<strong>Product Quantity</strong>
-			<div><% product_quantity %></div>
-		</div>
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Recall Initiation Date</strong>
+                <div><% recall_initiation_date %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Report Date</strong>
+                <div><% report_date %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Event Id</strong>
+                <div><% event_id %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Classification</strong>
+                <div><% classification %></div>
+		    </div>		    
+		</div>		
+		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Description</strong>
+                <div><% product_description %></div>
+            </div>
+		</div>		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Quantity</strong>
+                <div><% product_quantity %></div>
+            </div>
+		</div>			
+
 		<div>
 			<strong>Distribution Pattern</strong>
 			<div><% distribution_pattern %></div>
