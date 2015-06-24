@@ -1,6 +1,7 @@
 function RecallingFirmStatsModal(firm){
 	var me = this;
 	var apiUrl = 'https://api.fda.gov/food/enforcement.json';
+	var apiKey = 'xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv';
 	var modalTemplate = Hogan.compile($('#modal_template').html(), {
 		delimiters: '<% %>'
 	});
@@ -129,14 +130,22 @@ function RecallingFirmStatsModal(firm){
 
     this.getRecallCountsByState = function(){
     	var formattedFirm = '"' + this.getFormattedFirm() + '"';
-        return $.getJSON(apiUrl, {search:formattedFirm, count:'state.exact'}, function(response){
+        return $.getJSON(apiUrl, {
+        		search:formattedFirm, 
+        		count:'state.exact',
+        		'api_key': apiKey
+        	}, function(response){
         	return response.results;
         })
     }
 
     this.getRecallDates = function(){
     	var formattedFirm = '"' + this.getFormattedFirm() + '"';
-        return $.getJSON(apiUrl, {search:formattedFirm, count:'report_date'}, function(response){
+        return $.getJSON(apiUrl, {
+        		search:formattedFirm, 
+        		count:'report_date',
+        		'api_key': apiKey
+        	}, function(response){
         	return response.results;
         });
     }
@@ -228,6 +237,7 @@ function FoodRecalls(gridEl){
 	var me = this;
 	var geospatial = new Geospatial('map-canvas');
 	var foodRecallApiUrl = 'https://api.fda.gov/food/enforcement.json';
+	var apiKey = 'xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv';
 
 	var detailsTemplate = Hogan.compile($('#details_template').html(), {
 		delimiters: '<% %>'
@@ -294,7 +304,8 @@ function FoodRecalls(gridEl){
 		var limit = data[4].value;
 		var params = {
 			skip: start,
-			limit: limit
+			limit: limit,
+			'api_key': apiKey
 		};			
 		$.getJSON(foodRecallApiUrl, params, function(response){
 			response.draw  = data[0].value;
