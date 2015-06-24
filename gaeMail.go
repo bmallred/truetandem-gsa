@@ -1,6 +1,6 @@
 // +build appengine
 
-package controllers
+package main
 
 import (
 	"log"
@@ -10,6 +10,7 @@ import (
 	"google.golang.org/appengine/mail"
 )
 
+// sendEmail with the AppEngine API.
 func sendEmail(r *http.Request, from, to, subject, body string) {
 	// Use AppEngine to send our thank you cards
 	c := appengine.NewContext(r)
