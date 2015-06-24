@@ -251,14 +251,15 @@ function FoodRecalls(gridEl){
 	this.createGrid = function(){		
 		$grid = $table.DataTable({
 			"serverSide": true,		
-			searching: false,	
+			searching: true,	
 			iDisplayLength: 25,
 			autoWidth: true,
 			fnServerData: this.processServerDataResponse,
 			"columns" : [
-				{data : 'recall_number'},
+				{data : 'recall_number', width: 90},
 				{data : 'recalling_firm'},
-				{data : 'state'}
+				{data:  'classification', width:40},
+				{data : 'state', width:40}
 			]
 		});
 	}
@@ -302,11 +303,16 @@ function FoodRecalls(gridEl){
 	this.processServerDataResponse = function(source, data, callback){		
 		var start = data[3].value;
 		var limit = data[4].value;
+		var freeSearchText = data[5].value;
 		var params = {
 			skip: start,
 			limit: limit,
 			'api_key': apiKey
-		};			
+		};
+		console.log('Search...');
+		if(freeSearchText && freeSearchText.value){
+			params.search = '"' + freeSearchText.value + '"';
+		}
 		$.getJSON(foodRecallApiUrl, params, function(response){
 			response.draw  = data[0].value;
 			response.recordsTotal = response.meta.results.total;
