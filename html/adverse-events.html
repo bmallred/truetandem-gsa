@@ -2,14 +2,51 @@
 {{ define "styles" }}
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
     <link rel="stylesheet" type="text/javascript" href="//cdnjs.cloudflare.com/ajax/libs/dc/1.7.3/dc.css"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/dc.css"> -->
 	<style>
 		.table-hover td {
 			cursor: pointer;
 		}
+
+        .vertical-align {
+            display: table;
+        }
+
+        .vertical-align div {
+            display: table-cell;
+            vertical-align: middle;
+            float: none;
+        }
+
+        #spotlight {
+            background-image: url('/static/img/feature.jpg');
+            background-position: center;
+            height: 40vh;
+            width: 100%;
+            margin: 0;
+        }
+
+        .menu-item {
+            padding: 2em 0;
+        }
 	</style>
 {{ end }}
 {{ define "content" }}
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
+        <h1>Analytics</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/food-recalls" title="Food Recalls">Food Recalls</a>
+    </div>
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/enforcement-reporting" title="Enforcement Report">Enforcement Report</a>
+    </div>
+    <div class="col-xs-4 bg-white fg-orange text-center menu-item">
+        Adverse Events
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-offset-2 col-xs-8">
         <h3>Adverse Events</h3>
