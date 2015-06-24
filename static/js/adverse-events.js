@@ -1,18 +1,76 @@
 $(function () {
     'use strict';
 
-    var datatable, pieChart, lineChart;
-
     function AdverseEvents(gridEl) {
+        var datatable, pieChart, seriesChart;
         var $table = $(gridEl);
         var data = [];
         var me = this;
         var api = 'https://api.fda.gov/drug/event.json';
+        var apiKey ='xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv';
 
         this.initialize = function(gridEl) {
             this.createGrid(gridEl);
             this.configureHandlers();
-        }
+        };
+
+        this.createCharts = function(data) {
+            var filter = crossfilter($.map(data, function (value, index) {
+                return [value];
+            }));
+
+            this.createSeriousnessChart(filter);
+            this.createReportedEvents(filter);
+            dc.renderAll();
+        };
+
+        this.createSeriousnessChart = function(filter) {
+            var dimension = filter.dimension(function (d) {
+                if (d.serious === '1') {
+                    return 'Serious';
+                }
+                return 'Less serious';
+            });
+
+            var group = dimension.group().reduceSum(function (d) {
+                return 1;
+            });
+
+            pieChart = dc.pieChart('#pie-chart');
+            pieChart
+                .width(200)
+                .height(200)
+                .slicesCap(4)
+                .innerRadius(50)
+                .dimension(dimension)
+                .group(group)
+                .legend(dc.legend());
+
+        };
+
+        this.createReportedEvents = function(filter) {
+            var dimension = filter.dimension(function (d) {
+                return new Date(d['@epoch'] * 1000).setDate(1);
+            });
+
+            var group = dimension.group().reduceSum(function (d) {
+                return 1;
+            });
+
+            seriesChart = dc.lineChart('#series-chart');
+            seriesChart
+                .width(400)
+                .height(200)
+                .x(d3.time.scale().domain([new Date('1/1/2004'), new Date()]))
+                .round(d3.time.month.round)
+                .xUnits(d3.time.months)
+                .renderArea(true)
+                .brushOn(false)
+                .yAxisLabel('y-axis')
+                .elasticY(true)
+                .dimension(dimension)
+                .group(group);
+        };
 
         this.createGrid = function() {
             datatable = $table.DataTable({
@@ -155,6 +213,7 @@ $(function () {
             var start = data[3].value;
             var limit = data[4].value;
             var params = {
+                api_key: apiKey,
                 skip: start,
                 limit: limit
             };
@@ -164,8 +223,9 @@ $(function () {
                 response.recordsTotal = response.meta.results.total;
                 response.recordsFiltered = response.meta.results.total;
                 response.data = response.results;
-                callback(response)
+                callback(response);
                 data = response.results;
+                me.createCharts(data);
             });
         }
 
