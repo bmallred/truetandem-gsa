@@ -8,45 +8,43 @@ function RecallingFirmStatsModal(firm){
     
     this.show = function(){
     	this.getRecallStatistics().then(function(data){
-    		console.log(data.recallCountsByState);
 	        $('#modal_container').html(modalTemplate.render({
+	        	success:true,
 	            firm: firm,
 	            totalRecalls: data.totalRecalls,
 	            recallCountsByState: data.recallCountsByState,
 	            recallCountsByYear: data.recallCountsByYear
 	        }));        	        	
-            me.prepareBarChart(data.recallCountsByYear);
+            me.prepareBarChart(data.recallCountsByYear, '.year-recalls', 'year', 'count');
+            me.prepareBarChart(data.recallCountsByState, '.state-recalls', 'term', 'count');
+            console.log(data.recallCountsByState);
 	        $modal = $('#modal').modal();    		
+    	}, function(error){
+	        $('#modal_container').html(modalTemplate.render({
+	        	success:false,
+	        	firm:firm
+	        }));  
+    		$modal = $('#modal').modal(); 
     	});
     }
 
-    this.prepareBarChart = function(data){
+    this.prepareBarChart = function(data, element, xKey, yKey){
 		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		    width = 300 - margin.left - margin.right,
+		    width = 400 - margin.left - margin.right,
 		    height = 300 - margin.top - margin.bottom;
 
-		var x = d3.scale.ordinal()
-		    .rangeRoundBands([0, width], .1);
+		var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+		var y = d3.scale.linear().range([height, 0]);
+		var xAxis = d3.svg.axis().scale(x).orient("bottom");
+		var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
 
-		var y = d3.scale.linear()
-		    .range([height, 0]);
-
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("bottom");
-
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left")
-		    .ticks(10);
-
-		var svg = d3.select(".chart")
+		var svg = d3.select(element)
 		    .attr("width", width + margin.left + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		x.domain(data.map(function(d) { return d.year; }));
-		y.domain([0, d3.max(data, function(d) { return d.count; })]);
+		x.domain(data.map(function(d) { return d[xKey]; }));
+		y.domain([0, d3.max(data, function(d) { return d[yKey]; })]);
 
 		  svg.append("g")
 		      .attr("class", "x axis")
@@ -56,7 +54,7 @@ function RecallingFirmStatsModal(firm){
 		  svg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis)
-		    .append("text")
+		      .append("text")
 		      .attr("transform", "rotate(-90)")
 		      .attr("y", 6)
 		      .attr("dy", ".71em")
@@ -71,16 +69,18 @@ function RecallingFirmStatsModal(firm){
 					barColorAlternator = !barColorAlternator;
 					return barColorAlternator ? 'bar' : 'bar2';
 				})
-				.attr("x", function(d) { return x(d.year); })
+				.attr("x", function(d) { return x(d[xKey]); })
 				.attr("width", x.rangeBand())
-				.attr("y", function(d) { return y(d.count); })
-				.attr("height", function(d) { return height - y(d.count); });		    
+				.attr("y", function(d) { return y(d[yKey]); })
+				.attr("height", function(d) { return height - y(d[yKey]); });		    
 
     }
 
     this.getRecallStatistics = function(){
     	var deferred = $.Deferred();
-
+    	var errorFunc = function(){
+    		deferred.reject('Unable to query information for company: ' + firm);
+    	};
     	this.getRecallDates().then(function(recallDatesResponse){
     		var recallCountsByYear = me.getRecallCountsByYear(recallDatesResponse.results);
     		var totalRecalls = 0;
@@ -93,11 +93,13 @@ function RecallingFirmStatsModal(firm){
     				recallCountsByState: recallCountsByStateResponse.results,
     				recallCountsByYear: me.getRecallCountsByYear(recallDatesResponse.results)
     			});
-    		});
-    	});
+    		}, errorFunc);
+    	}, errorFunc
+    	);
 
     	return deferred;
     }
+
 
     /**
       * Extracts recall counts and groups them by year.
@@ -106,7 +108,6 @@ function RecallingFirmStatsModal(firm){
         var counts = {};
         for(var x = 0; x < recalls.length; x++){        	
         	var recallPoint = recalls[x];
-        	console.log(recallPoint);
         	var dateStr = recallPoint.time;
         	var recallYear = dateStr.substr(0,4);
         	if(!counts[recallYear]){
@@ -127,15 +128,22 @@ function RecallingFirmStatsModal(firm){
     }
 
     this.getRecallCountsByState = function(){
-        return $.getJSON(apiUrl +'?search=recalling_firm:"'+firm.replace(/[^\w\s]/gi, '')+'"&count=state.exact', {}, function(response){
+    	var formattedFirm = '"' + this.getFormattedFirm() + '"';
+        return $.getJSON(apiUrl, {search:formattedFirm, count:'state.exact'}, function(response){
         	return response.results;
         })
     }
 
     this.getRecallDates = function(){
-        return $.getJSON(apiUrl + '?search=recalling_firm:"'+firm.replace(/[^\w\s]/gi, '')+'"&count=report_date', {}, function(response){
+    	var formattedFirm = '"' + this.getFormattedFirm() + '"';
+        return $.getJSON(apiUrl, {search:formattedFirm, count:'report_date'}, function(response){
         	return response.results;
         });
+    }
+
+    // Removes special characters in order to properly query the FDA api.
+    this.getFormattedFirm = function(){
+    	return firm.replace(/[^\w\s-]/gi, '');
     }
 }
 

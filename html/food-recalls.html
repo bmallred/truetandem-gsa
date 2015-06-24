@@ -5,12 +5,11 @@
 		.table-hover td {
 			cursor: pointer;
 		}
-
 		.bar {
-		  fill: #7eb7b0;
+		  fill: #e29a75;
 		}
 		.bar2 {
-		  fill: #e29a75;
+		  fill: #7eb7b0;
 		}
 		.axis {
 		  font: 10px sans-serif;
@@ -62,27 +61,29 @@
             <h3 class="modal-title">Recall Statistics for <% firm %></h3>
           </div>
           <div class="modal-body"> 
+          	<%#success%>
           	<div class="row">
-          		<div class="col-xs-6">
-          			<strong>Recalls by Year</strong>
-          			<svg class="chart" style="margin:0 auto;display:table;"></svg>
-          		</div>
-          		<div class="col-xs-6">
-          			<div>
-          				<strong>Total Recalls</strong> 
-          				<div><% totalRecalls %></div>
-          			</div>
-          			<div>
-          				<strong> Recalls by State</strong>
-          				<div>
-          					<%#recallCountsByState %>
-          						<div><% term %> - <% count %></div>
-          					<%/recallCountsByState %>
-          				</div>
-          			</div>
+          		<div class="col-xs-8">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#year" aria-controls="year" role="tab" data-toggle="tab">Recalls by Year</a></li>
+						<li role="presentation" ><a href="#state" aria-controls="state" role="tab" data-toggle="tab">Recalls by State</a></li>
+					</ul>     
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="year">
+							<svg class="year-recalls"></svg>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="state">
+							<svg class="state-recalls"></svg>
+						</div>
+					</div>				       			          			          			
           		</div>
           	</div>
-            
+          	<%/success%>
+          	<%^success%>            
+          		<div class="alert alert-warning" role="alert">
+          			Oops! We were unable to retrieve information for <strong><% firm %></strong>
+          		</div>          
+          	<%/success%>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
