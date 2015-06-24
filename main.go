@@ -13,13 +13,8 @@ import (
 func main() {
 	log.Print("Configuring environment")
 	time.Local = time.UTC
-	bindRoutes()
 
-	log.Println("Serving content on", "http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func bindRoutes() {
+	// Configure HTTP routing for the application
 	http.HandleFunc("/", controllers.DefaultIndex)
 	http.HandleFunc("/contact", controllers.DefaultContact)
 	http.HandleFunc("/thank-you", controllers.DefaultThankYou)
@@ -28,4 +23,7 @@ func bindRoutes() {
 	http.HandleFunc("/organization", controllers.DefaultOrganization)
 	http.HandleFunc("/enforcement-reporting", controllers.EnforcementReporting)
 	http.HandleFunc("/static/", controllers.StaticFiles)
+
+	log.Println("Serving content on", "http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
