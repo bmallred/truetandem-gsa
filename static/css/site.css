@@ -76,6 +76,13 @@
     background-color: #e29a75 !important;
 }
 
+.bg-black,
+.bg-black a:link,
+.bg-black a:hover,
+.bg-black a:visited {
+    background-color: #000 !important;
+}
+
 .bg-gray,
 .bg-gray a:link,
 .bg-gray a:hover,
