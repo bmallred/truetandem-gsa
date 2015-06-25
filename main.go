@@ -18,7 +18,6 @@ func init() {
 	http.HandleFunc("/organization", DefaultOrganization)
 	http.HandleFunc("/enforcement-reporting", EnforcementReporting)
 	http.HandleFunc("/adverse-events", AdverseEvents)
-	http.HandleFunc("/test", DefaultTest)
 	http.HandleFunc("/static/", StaticFiles)
 }
 
