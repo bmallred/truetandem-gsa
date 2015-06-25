@@ -146,7 +146,7 @@ function AdverseEvents(gridEl) {
 
             seriesChart = dc.lineChart('#series-chart');
             seriesChart
-                .width(700)
+                .width(640)
                 .height(200)
                 .x(d3.time.scale().domain([new Date($('.start-date').val()), new Date($('.end-date').val())]))
                 .round(d3.time.month.round)
@@ -158,7 +158,7 @@ function AdverseEvents(gridEl) {
                 .elasticY(true)
                 .dimension(dimension)
                 .group(group);
-            seriesChart.margins().left = 60;
+            seriesChart.margins().left = 42;
             seriesChart.render();
         });
     };
@@ -167,6 +167,7 @@ function AdverseEvents(gridEl) {
      * Create our datatable grid.
      **/
     this.createGrid = function() {
+        $.fn.dataTableExt.pager.numbers_length = 5;
         datatable = $table.DataTable({
             destroy: true,
             autoWidth: false,
