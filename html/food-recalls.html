@@ -1,57 +1,158 @@
 {{ define "title" }}GSA - Analyze Food Recalls{{ end }}
 {{ define "styles" }}
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="//nvd3.org/assets/css/nv.d3.css">
+
 	<style>
 		.table-hover td {
 			cursor: pointer;
 		}
-	</style>
+
+		.bar-chart {
+			height: 300px;width:400px;margin:0 auto;display:table;
+		}		
+	</style>	
 {{ end }}
 {{ define "content" }}
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
+        <h1>Analytics</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4 bg-white fg-orange text-center menu-item">
+        Food Recalls
+    </div>
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/enforcement-reporting" title="Enforcement Report">Enforcement Report</a>
+    </div>
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/adverse-events" title="Adverse Events">Adverse Events</a>
+    </div>
+</div>
+
 <div class="container">
-	<div class="row" style="margin-top:60px;">
-		<div class="col-xs-8">
+    <h3>Food Recalls</h3>
+    <p>Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+	    at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+	    lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+	    eam.
+	</p>    
+	<div class="row">
+		<div class="col-xs-12 col-md-7">
 			<table id="grid" class="table table-hover">
 			    <thead>
 			        <tr>
 			            <th>Recall Number</th>
 			            <th>Firm</th>
+			            <th>Classification</th>
 			            <th>State</th>
 			        </tr>
 			    </thead>
 			</table>
 		</div>
-		<div class="col-xs-4">
-			<div id="details_section">
-
-			</div>
+		<div class="col-md-5">
+			<div id="details_section"></div>
 			<div id="map-canvas" style="height:300px;width:100%;"></div>	
 		</div>
 	</div>
 </div>
+<div id="modal_container"></div>
 
 {{ end }}
 {{ define "scripts" }}
-
+<script type="javascript/template" id="modal_template">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">Recall Statistics for <% firm %></h3>
+          </div>
+          <div class="modal-body"> 
+          	<%#success%>
+          	<div class="row">
+				<div class="col-xs-6 text-center">	
+					<h3>Recalls by Year</h3>				
+					<svg class="year-recalls bar-chart"></svg>
+          		</div>           	
+          		<div class="col-xs-6 text-center">		
+          			<h3>Recalls by State</h3>			
+					<svg class="state-recalls bar-chart"></svg>				
+          		</div>         		
+          	</div>
+          	<%/success%>
+          	<%^success%>            
+          		<div class="alert alert-warning" role="alert">
+          			Oops! We were unable to retrieve information for <strong><% firm %></strong>
+          		</div>          
+          	<%/success%>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
 <script type="javascript/template" id="details_template">
 	<div>
 		<div class="pull-right">
 				<span class="badge"><% status %></span>
 		</div>	
 		<div>
-			<h3><% recall_number %></h3>
-			<div>
-				<small><% recall_initiation_date %></small>
-			</div>		
+			<h3 style="margin-top:0px;"><% recall_number %></h3>
+		
 		</div>
-		<div>
-			<strong>Product Type</strong>
-			<div><% product_type %></div>
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Company</strong>
+                <div><a class="recalling-firm" data-recalling-firm="<% recalling_firm %>" href="javascript:void(0);"><% recalling_firm %></a></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Product Type</strong>
+                <div><% product_type %></div>
+		    </div>		    
 		</div>		
-		<div>
-			<strong>Product Quantity</strong>
-			<div><% product_quantity %></div>
-		</div>
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Recall Initiation Date</strong>
+                <div><% recall_initiation_date %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Report Date</strong>
+                <div><% report_date %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Event Id</strong>
+                <div><% event_id %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Classification</strong>
+                <div><% classification %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Voluntary Mandated</strong>
+                <div><% voluntary_mandated %></div>
+            </div>
+		</div>			
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Description</strong>
+                <div><% product_description %></div>
+            </div>
+		</div>		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Quantity</strong>
+                <div><% product_quantity %></div>
+            </div>
+		</div>			
+
 		<div>
 			<strong>Distribution Pattern</strong>
 			<div><% distribution_pattern %></div>
@@ -67,13 +168,13 @@
 <!-- Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <!-- Hoganjs -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js" />
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js"></script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-
+<!-- d3 -->
+<script src="//d3js.org/d3.v3.min.js"></script>-
+<script type="text/javascript" src="//cdn.rawgit.com/novus/nvd3/v1.7.1/build/nv.d3.min.js"></script>
 <script type="text/javascript" src="/static/js/food-recalls.js"></script>
 
 {{ end }}
