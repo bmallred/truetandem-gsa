@@ -45,7 +45,7 @@
 .fg-black a:link,
 .fg-black a:hover,
 .fg-black a:visited {
-    color: #000 !important;
+    color: #434343 !important;
 }
 
 .bg-teal,
@@ -74,13 +74,6 @@
 .bg-orange a:hover,
 .bg-orange a:visited {
     background-color: #e29a75 !important;
-}
-
-.bg-black,
-.bg-black a:link,
-.bg-black a:hover,
-.bg-black a:visited {
-    background-color: #000 !important;
 }
 
 .bg-gray,
@@ -114,7 +107,6 @@
 body {
     font-size: 12px;
     font-family: "proxima-nova", sans-serif;
-
 }
 
 .h4, h4 {
@@ -125,13 +117,6 @@ body {
 .footer {
     padding: 5em;
 }
-
-/* Analytics header image and menu */
-#spotlight {
-    background-image: url('/static/img/feature.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 
 .navbar-brand {
     padding: 7px 15px 0;
@@ -153,27 +138,53 @@ body {
     min-height: 0;
 }
 
+/* ! All Pages */
+.content {
+	margin-top: 50px;
+	min-height: 80vh;
+}
+
+.col-xs-12.text-center.fg-white h3 {
+    text-transform: uppercase;
+}
+
+#spotlight {
+   background-image: url('/static/img/feature.jpg');
+   height: 100vh;
+   width: 100%;
+   margin: 0;
+   background-position: center center;
+   background-size: cover;
+}
+
 #spotlight a {
    border: 4px solid #fff;
    border-radius: 0;
    font-weight: 700;
 }
 
-#spotlight.large{
-	height:100vh;
+.vertical-align {
+    display: table;
 }
- .vertical-align {
-        display: table;
-    }
 
 .vertical-align div {     
 	display: table-cell;
     vertical-align: middle;
     float: none;
 }
+
+/* ! Home Page */
+#spotlight.large{
+	height:100vh;
+}
+
 .icon-heading {
     margin-top: 5em;
     margin-bottom: 1em;
+}
+
+.icon-heading i {
+    font-size: 65px;
 }
 
 .kudos {
@@ -184,6 +195,7 @@ body {
     border-radius: 8px;
     font-size: 1.2em;
 }
+
 .kudos::after {
     border-color: #ffffff transparent;
     border-style: solid;
@@ -197,87 +209,47 @@ body {
     width: 0;
     z-index: 1;
 }
-#spotlight {
-   background-image: url('/static/img/feature.jpg');
-   height: 100vh;
-   width: 100%;
-   margin: 0;
+
+/* ! Contact Page */
+.profile {
+    position: relative;
+    padding: 0;
 }
 
- .vertical-align {
-        display: table;
-    }
-
-    .vertical-align div {
-        display: table-cell;
-        vertical-align: middle;
-        float: none;
-    }
-
-    .profile {
-        position: relative;
-        padding: 0;
-    }
-
-    .profile img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
-    }
-
-    .profile-caption {
-        opacity: 0.8;
-        z-index: -1;
-    }
-
-    .bethany {
-        background-image: url('/static/img/bethany.jpg');
-        background-position: center;
-    }
-    .joey {
-        background-image: url('/static/img/joey.jpg');
-        background-position: center;
-    }
-    .john {
-        background-image: url('/static/img/john.jpg');
-        background-position: center;
-    }
-    .krystal {
-        background-image: url('/static/img/krystal.jpg');
-        background-position: center;
-    }
-    .paul {
-        background-image: url('/static/img/paul.jpg');
-        background-position: center;
-    }
-    .sara {
-        background-image: url('/static/img/sara.jpg');
-        background-position: center;
-    }
-
-    #spotlight {
-    background-image: url('/static/img/feature.jpg');
-    background-position: center;
-    height: 40vh;
+.profile img {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    margin: 0;
+    height: auto;
 }
 
-.menu-item {
-    padding: 2em 0;
+.profile-caption {
+    opacity: 0.8;
+    z-index: -1;
 }
 
-.vertical-align {
-    display: table;
+.bethany {
+    background-image: url('/static/img/bethany.jpg');
+    background-position: center;
 }
-
-.vertical-align div {
-    display: table-cell;
-    vertical-align: middle;
-    float: none;
-
-.col-xs-12.text-center.fg-white h3 {
-    text-transform: uppercase;
+.joey {
+    background-image: url('/static/img/joey.jpg');
+    background-position: center;
+}
+.john {
+    background-image: url('/static/img/john.jpg');
+    background-position: center;
+}
+.krystal {
+    background-image: url('/static/img/krystal.jpg');
+    background-position: center;
+}
+.paul {
+    background-image: url('/static/img/paul.jpg');
+    background-position: center;
+}
+.sara {
+    background-image: url('/static/img/sara.jpg');
+    background-position: center;
 }
