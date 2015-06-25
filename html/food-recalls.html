@@ -11,6 +11,16 @@
 		.bar-chart {
 			height: 300px;width:400px;margin:0 auto;display:table;
 		}		
+
+		.recall-status {
+			background-color:#7eb7b0;
+			color: white;
+			padding:4px;
+		}
+
+		.food-recalls .col-xs-12, .col-xs-6 div {
+			padding-bottom:8px;
+		}
 	</style>	
 {{ end }}
 {{ define "content" }}
@@ -31,29 +41,35 @@
     </div>
 </div>
 
-<div class="container">
-    <h3>Food Recalls</h3>
-    <p>
-    	<p>Recalls are an appropriate alternative method for removing or correcting marketed consumer products, their labeling, and/or promotional literature that violate the laws administered by the Food and Drug Administration (FDA). Recalls afford equal consumer protection but generally are more efficient and timely than formal administrative or civil actions, especially when the product has been widely distributed.</p>
+<div class="row">
+	<div class="col-xs-offset-2 col-xs-8">
+	    <h3>Food Recalls</h3>
+	    <p>
+	    	<p>Recalls are an appropriate alternative method for removing or correcting marketed consumer products, their labeling, and/or promotional literature that violate the laws administered by the Food and Drug Administration (FDA). Recalls afford equal consumer protection but generally are more efficient and timely than formal administrative or civil actions, especially when the product has been widely distributed.</p>
 
-		<p>Manufacturers and/or distributors may initiate a recall at any time to fulfill their responsibility to protect the public health from products that present a risk of injury or gross deception, or are otherwise defective. Firms may also initiate a recall following notification of a problem by FDA or a state agency, in response to a formal request by FDA, or as ordered by FDA.</p>
-	</p>    
-	<div class="row">
-		<div class="col-xs-12 col-md-7">
-			<table id="grid" class="table table-hover">
-			    <thead>
-			        <tr>
-			            <th>Recall Number</th>
-			            <th>Firm</th>
-			            <th>Classification</th>
-			            <th>State</th>
-			        </tr>
-			    </thead>
-			</table>
-		</div>
-		<div class="col-md-5">
-			<div id="details_section"></div>
-			<div id="map-canvas" style="height:300px;width:100%;"></div>	
+			<p>Manufacturers and/or distributors may initiate a recall at any time to fulfill their responsibility to protect the public health from products that present a risk of injury or gross deception, or are otherwise defective. Firms may also initiate a recall following notification of a problem by FDA or a state agency, in response to a formal request by FDA, or as ordered by FDA.</p>
+		</p>    
+		<div class="row">
+			<div class="col-xs-12 col-md-7">
+				<table id="grid" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th>Recall Number</th>
+				            <th>Firm</th>
+				            <th>Classification</th>
+				            <th>State</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			<div class="col-md-5">			
+				<div id="details_section"></div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div id="map-canvas" style="height:300px;width:100%;"></div>	
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -96,18 +112,23 @@
     </div>
 </script>
 <script type="javascript/template" id="details_template">
-	<div>
-		<div class="pull-right">
-				<span class="badge"><% status %></span>
-		</div>	
-		<div>
-			<h3 style="margin-top:0px;"><% recall_number %></h3>
-		
+	<div class="food-recalls">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pull-right">
+						<div class="recall-status"><% status %></div>
+				</div>	
+				<div>
+					<h3 style="margin-top:0px;color:#7eb7b0;"><% recall_number %></h3>			
+				</div>
+			</div>
 		</div>
 		<div class="row">		
 		    <div class="col-xs-6">
     		    <strong>Company</strong>
-                <div><a class="recalling-firm" data-recalling-firm="<% recalling_firm %>" href="javascript:void(0);"><% recalling_firm %></a></div>
+                <div>
+                	<a class="recalling-firm" data-recalling-firm="<% recalling_firm %>" href="javascript:void(0);"><% recalling_firm %></a>                
+                </div>
 		    </div>
 		    <div class="col-xs-6">
                 <strong>Product Type</strong>
@@ -153,15 +174,19 @@
             </div>
 		</div>			
 
-		<div>
-			<strong>Distribution Pattern</strong>
-			<div><% distribution_pattern %></div>
+		<div class="row">
+			<div class="col-xs-12">
+				<strong>Distribution Pattern</strong>
+				<div><% distribution_pattern %></div>
+			</div>
 		</div>				
-		<div>
-			<strong>Reason for Recall</strong>
-			<p>
-				<% reason_for_recall %>
-			</p>
+		<div class="row">
+			<div class="col-xs-12">
+				<strong>Reason for Recall</strong>
+				<p>
+					<% reason_for_recall %>
+				</p>
+			</div>
 		</div>		
 	</div>	
 </script>
