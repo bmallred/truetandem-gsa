@@ -3,6 +3,7 @@ var classdat = [];
 var stackchart;
 var linechart;
 var lineChartShown = false;
+var apiKey = "xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv";
 var myColors = [ "#e29a75", "#7eb7b0", "#f5de74"];  //"#99ABBF"
 d3.scale.myColors = function() {
     return d3.scale.ordinal().range(myColors);
@@ -19,7 +20,7 @@ function retrieveFDAData() {
    * classification: Class I, Class II, or Class III
    */
   var getReportCounts = function(classification){
-    var url="https://api.fda.gov/food/enforcement.json?search=classification:" + classification + "&count=report_date";
+    var url="https://api.fda.gov/food/enforcement.json?search=classification:" + classification + "&count=report_date&api_key="+apiKey;
     return $.get(url, "", null, "json");
   }
 

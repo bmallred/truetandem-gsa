@@ -1,5 +1,6 @@
 {{ define "title" }}GSA - Home{{ end }}
 {{ define "styles" }}
+<link rel="stylesheet" type="text/javascript" href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.css"></script>
 <style type="text/css">
     .vertical-align {
         display: table;
@@ -39,6 +40,13 @@
         border-radius: 4px;
     }
 </style>
+<style type="text/css">
+    .nvd3.nv-pie .nv-slice text {
+        fill: white !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+    }
+</style>
 {{ end }}
 {{ define "content" }}
 <div id="spotlight" class="row vertical-align">
@@ -76,9 +84,27 @@
         eam.</p>
     </div>
 </div>
-<div class="row bg-white" style="min-height: 80vh;">
-    <!-- TODO: Populate with charts and graphs -->
-</div>
+<!-- <div class="row bg-white" style="min-height: 80vh;"> -->
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-8">
+            <h3>FDA Enforcement Reports</h3>
+            <h4>Food Recall Enforcement Reports Since 2012</h4>
+        </div>
+        <div id="classbarchart">
+            <svg style="height: 390px;width: 100%;"></svg>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-8">
+            <h4>Total Food Recall Enforcement Reports Since 2012</h4>
+        </div>
+        <div id="classdonutchart">
+            <svg style="height:390px;width:100%;"></svg>
+        </div>
+    </div>
+
+<!-- </div> -->
 <div class="row bg-orange">
     <div class="col-xs-12 text-center fg-white">
         <h3>Customer Experience</h3>
@@ -113,4 +139,7 @@
 </div>
 {{ end }}
 {{ define "scripts" }}
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/js/default-index.js"></script>
 {{ end }}
