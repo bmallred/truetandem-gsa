@@ -1,3 +1,5 @@
+'use strict'
+
 function RecallingFirmStatsModal(firm){
 	var me = this;
 	var apiUrl = 'https://api.fda.gov/food/enforcement.json';
@@ -299,7 +301,6 @@ function FoodRecalls(gridEl){
 			limit: limit,
 			'api_key': apiKey
 		};
-		console.log('Search...');
 		if(freeSearchText && freeSearchText.value){
 			params.search = '"' + freeSearchText.value + '"';
 		}
