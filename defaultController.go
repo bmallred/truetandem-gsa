@@ -73,16 +73,3 @@ func DefaultThankYou(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
-
-// Test page creation
-func DefaultTest(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/test.html",
-	))
-
-	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
