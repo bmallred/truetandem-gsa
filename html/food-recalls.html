@@ -1,23 +1,199 @@
 {{ define "title" }}GSA - Analyze Food Recalls{{ end }}
 {{ define "styles" }}
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	<style>
+		.table-hover td {
+			cursor: pointer;
+		}
+		.bar {
+		  fill: #e29a75;
+		}
+		.bar2 {
+		  fill: #7eb7b0;
+		}
+		.axis {
+		  font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
+		.x.axis path {
+		  display: none;
+		}
+	</style>	
 {{ end }}
 {{ define "content" }}
+<div id="spotlight" class="row vertical-align">
+    <div class="col-xs-12 text-center fg-white">
+        <h1>Analytics</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4 bg-white fg-orange text-center menu-item">
+        Food Recalls
+    </div>
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/enforcement-reporting" title="Enforcement Report">Enforcement Report</a>
+    </div>
+    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+        <a href="/adverse-events" title="Adverse Events">Adverse Events</a>
+    </div>
+</div>
 
-<table id="grid" class="display" style="margin-top:100px;">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-        </tr>
-    </thead>
-</table>
+<div class="container">
+    <h3>Food Recalls</h3>
+    <p>Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+	    at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+	    lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+	    eam.
+	</p>    
+	<div class="row">
+		<div class="col-xs-8">
+			<table id="grid" class="table table-hover">
+			    <thead>
+			        <tr>
+			            <th>Recall Number</th>
+			            <th>Firm</th>
+			            <th>Classification</th>
+			            <th>State</th>
+			        </tr>
+			    </thead>
+			</table>
+		</div>
+		<div class="col-xs-4">
+			<div id="details_section"></div>
+			<div id="map-canvas" style="height:300px;width:100%;"></div>	
+		</div>
+	</div>
+</div>
+<div id="modal_container"></div>
 
 {{ end }}
 {{ define "scripts" }}
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="javascript/template" id="modal_template">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">Recall Statistics for <% firm %></h3>
+          </div>
+          <div class="modal-body"> 
+          	<%#success%>
+          	<div class="row">
+          		<div class="col-xs-8">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#year" aria-controls="year" role="tab" data-toggle="tab">Recalls by Year</a></li>
+						<li role="presentation" ><a href="#state" aria-controls="state" role="tab" data-toggle="tab">Recalls by State</a></li>
+					</ul>     
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="year">
+							<svg class="year-recalls"></svg>
+						</div>
+						<div role="tabpanel" class="tab-pane" id="state">
+							<svg class="state-recalls"></svg>
+						</div>
+					</div>				       			          			          			
+          		</div>
+          	</div>
+          	<%/success%>
+          	<%^success%>            
+          		<div class="alert alert-warning" role="alert">
+          			Oops! We were unable to retrieve information for <strong><% firm %></strong>
+          		</div>          
+          	<%/success%>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
+<script type="javascript/template" id="details_template">
+	<div>
+		<div class="pull-right">
+				<span class="badge"><% status %></span>
+		</div>	
+		<div>
+			<h3 style="margin-top:0px;"><% recall_number %></h3>
+		
+		</div>
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Company</strong>
+                <div><a class="recalling-firm" data-recalling-firm="<% recalling_firm %>" href="javascript:void(0);"><% recalling_firm %></a></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Product Type</strong>
+                <div><% product_type %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Recall Initiation Date</strong>
+                <div><% recall_initiation_date %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Report Date</strong>
+                <div><% report_date %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+		    <div class="col-xs-6">
+    		    <strong>Event Id</strong>
+                <div><% event_id %></div>
+		    </div>
+		    <div class="col-xs-6">
+                <strong>Classification</strong>
+                <div><% classification %></div>
+		    </div>		    
+		</div>		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Voluntary Mandated</strong>
+                <div><% voluntary_mandated %></div>
+            </div>
+		</div>			
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Description</strong>
+                <div><% product_description %></div>
+            </div>
+		</div>		
+		<div class="row">
+            <div class="col-xs-12">
+                <strong>Product Quantity</strong>
+                <div><% product_quantity %></div>
+            </div>
+		</div>			
+
+		<div>
+			<strong>Distribution Pattern</strong>
+			<div><% distribution_pattern %></div>
+		</div>				
+		<div>
+			<strong>Reason for Recall</strong>
+			<p>
+				<% reason_for_recall %>
+			</p>
+		</div>		
+	</div>	
+</script>
+<!-- Google Maps -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<!-- Hoganjs -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/hogan.js/3.0.2/hogan.min.js"></script>
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<!-- d3 -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="/static/js/food-recalls.js"></script>
 
 {{ end }}
