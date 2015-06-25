@@ -252,6 +252,7 @@ function FoodRecalls(gridEl){
 		$grid = $table.DataTable({
 			"serverSide": true,		
 			searching: true,	
+			bSort: false,
 			iDisplayLength: 25,
 			autoWidth: true,
 			fnServerData: this.processServerDataResponse,
