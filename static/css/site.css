@@ -4,7 +4,6 @@
 .fg-teal a:visited {
     color: #7eb7b0 !important;
 }
-
 .fg-teal a:hover {
 	color: #61aba2 !important;
 }
@@ -22,7 +21,6 @@
 .fg-yellow a:visited {
     color: #f5de74 !important;
 }
-
 .fg-yellow a:hover {
 	color: #f5de74 !important;
 }
@@ -32,7 +30,6 @@
 .fg-orange a:visited {
     color: #e29a75 !important;
 }
-
 .fg-orange a:hover {
 	color: #e1895e !important;	
 }
@@ -48,7 +45,6 @@
 .fg-gray-2 a:visited {
     color: #c8c8c8 !important;
 }
-
 .fg-gray a:hover, .fg-gray-2 a:hover {
 	color: #fff !important;
 }
@@ -58,7 +54,6 @@
 .fg-gray-3 a:visited {
     color: #757575 !important;
 }
-
 .fg-gray-3 a:hover {
 	color: #434343 !important;
 }
@@ -76,7 +71,6 @@
     background-color: #7eb7b0 !important;
 }
 
-
 .bg-teal a:hover {
 	background-color: #61aba2 !important;
 }
@@ -86,7 +80,6 @@
 .bg-white a:visited {
     background-color: #fff !important;
 }
-
 .bg-white a:hover {
 	background-color: #cfcece !important;
 }
@@ -96,7 +89,6 @@
 .bg-yellow a:visited {
     background-color: #f5de74 !important;
 }
-
 .bg-yellow a:hover {
 	background-color: #edd151 !important;
 }
@@ -106,7 +98,6 @@
 .bg-orange a:visited {
     background-color: #e29a75 !important;
 }
-
 .bg-orange a:hover {
 	background-color: #e1895e !important;
 }
@@ -123,7 +114,6 @@
 .bg-dark-gray a:hover {
     background-color: #373938 !important;
 }
-
 .bg-gray a:hover {
 	background-color: #fff !important;
 }
@@ -138,8 +128,6 @@
 .list-inline > li {
     display: inline-block;
 }
-
-
 
 /* Twitter Bootstrap overrides */
 body {
@@ -179,6 +167,16 @@ p {
     color: #434343 !important;
 }
 
+.social {
+    border: 3px solid #4b4d4d;
+    border-radius: 3px;
+    padding: 1em 2em 2em;
+}
+
+.social .row {
+    margin-left: -2em;
+}
+
 .social .btn.btn-link:hover {
     color: #cfcece !important;
 }
@@ -187,33 +185,32 @@ p {
     padding: 5em;
 }
 
-.social {
-    border: 3px solid #4b4d4d;
-    border-radius: 3px;
-    padding: 1em 2em 2em;
-}
-
 .navbar-brand {
     padding: 7px 15px 0;
+}
+
+.navbar-brand img{
+    height: 2em;
+    
 }
 
 .collapse.navbar-collapse.pull-right {
     font-size: 15px;
 }
-.navbar-brand img{
-	height: 2em;
-	
-}
+
 .row{
 	margin-left : 0;
 	margin-right: 0;
 }
 
-.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9,
+.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
     min-height: 0;
 }
 
-/* ! All Pages */
+/* All Pages */
 .content {
 	margin-top: 50px;
 	min-height: 80vh;
@@ -244,7 +241,7 @@ p {
     float: none;
 }
 
-/* ! Home Page */
+/* Home Page */
 #spotlight.large{
 	height:100vh;
 }
@@ -301,7 +298,16 @@ p {
     z-index: 1;
 }
 
-/* ! Contact Page */
+/* Analytics */
+.menu-item {
+    padding: 2em 0;
+}
+
+.pagination {
+    font-size: smaller;
+}
+
+/* Organization Page */
 .profile {
     position: relative;
     padding: 0;
@@ -325,18 +331,23 @@ p {
 .bethany {
     background-image: url('/static/img/bethany.jpg');
 }
+
 .joey {
     background-image: url('/static/img/joey.jpg');
 }
+
 .john {
     background-image: url('/static/img/john.jpg');
 }
+
 .krystal {
     background-image: url('/static/img/krystal.jpg');
 }
+
 .paul {
     background-image: url('/static/img/paul.jpg');
 }
+
 .sara {
     background-image: url('/static/img/sara.jpg');
 }
