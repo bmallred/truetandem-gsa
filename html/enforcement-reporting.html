@@ -1,78 +1,81 @@
 {{ define "title" }}GSA - Enforcement Reporting{{ end }}
 {{ define "styles" }}
-    <link rel="stylesheet" type="text/javascript" href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.css"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.css">
 	<style>
-	.chart {
-	  float:left;
-	  height: 400px;
-	  color: #333333;
-	  margin-bottom: 2em;
-	}
-	.chart.full {
-	  width: 100%;
-	}
-	.chart-toggle-btns {
-      padding: 1em 0;
-      float: right;
-    }
-    .chart-form-btn {
-      color: #333;
-    }
+        .chart {
+          float:left;
+          height: 400px;
+          color: #333333;
+          margin-bottom: 2em;
+        }
+
+        .chart.full {
+          width: 100%;
+        }
+
+        .chart-toggle-btns {
+          padding: 1em 0;
+          float: right;
+        }
+
+        .chart-form-btn {
+          color: #333;
+        }
 	</style>
 {{ end }}
 {{ define "content" }}
-<div id="spotlight" class="row vertical-align">
-    <div class="col-xs-12 text-center fg-white">
-        <h1>Analytics</h1>
+    <div id="spotlight" class="row vertical-align">
+        <div class="col-xs-12 text-center fg-white">
+            <h1>Analytics</h1>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
-        <a href="/food-recalls" title="Food Recalls">Food Recalls</a>
+    <div class="row">
+        <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+            <a href="/food-recalls" title="Food Recalls">Food Recalls</a>
+        </div>
+            <div class="col-xs-4 bg-white fg-orange text-center menu-item">
+            Enforcement Reporting
+        </div>
+        <div class="col-xs-4 bg-orange fg-white text-center menu-item">
+            <a href="/adverse-events" title="Adverse Events">Adverse Events</a>
+        </div>
     </div>
-        <div class="col-xs-4 bg-white fg-orange text-center menu-item">
-        Enforcement Reporting
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-8">
+            <h3>Enforcement Reporting</h3>
+            <p>The FDA Enforcement Reporting catalog conatains all food product recalls monitored by the FDA. When an FDA-regulated product is either defective or potentially harmful, recalling that product—removing it from the market or correcting the problem—is the most effective means for protecting the public.
+            </p>
+            <p>
+            Recalls are almost always voluntary, meaning a company discovers a problem and recalls a product on its own. Other times a company recalls a product after FDA raises concerns. Only in rare cases will FDA request or order a recall. But in every case, FDA's role is to oversee a company's strategy, classify the recalled products according to the level of hazard involved, and assess the adequacy of the recall. Recall information is posted in the Enforcement Reports once the products are classified.
+            </p>
+            <p>
+            Important note: The data prior to mid-2012 is incomplete and has not been validated with internal FDA data. This dataset, like all datasets at openFDA, is a work in progress
+            </p>
+        </div>
     </div>
-    <div class="col-xs-4 bg-orange fg-white text-center menu-item">
-        <a href="/adverse-events" title="Adverse Events">Adverse Events</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-offset-2 col-xs-8">
-        <h3>Enforcement Reporting</h3>
-		<p>The FDA Enforcement Reporting catalog conatains all food product recalls monitored by the FDA. When an FDA-regulated product is either defective or potentially harmful, recalling that product—removing it from the market or correcting the problem—is the most effective means for protecting the public. 
-		</p>
-		<p>
-		Recalls are almost always voluntary, meaning a company discovers a problem and recalls a product on its own. Other times a company recalls a product after FDA raises concerns. Only in rare cases will FDA request or order a recall. But in every case, FDA's role is to oversee a company's strategy, classify the recalled products according to the level of hazard involved, and assess the adequacy of the recall. Recall information is posted in the Enforcement Reports once the products are classified.
-		</p>
-		<p>
-		Important note: The data prior to mid-2012 is incomplete and has not been validated with internal FDA data. This dataset, like all datasets at openFDA, is a work in progress
-		</p>
-    </div>
-</div>
-<div class="row" style="min-height: 330px;">
-    <div class="col-xs-offset-2 col-xs-8">
-        <div class="chart-toggle-btns">
-		    <div class="col-sm-3 col-xs-6 text-right">
-                <a class="btn" title="Stacked Chart" alt="Stacked Chart" id="stackedImage"><i class="fa fa-2x fa-area-chart chart-form-btn" ></i></a>
+    <div class="row" style="min-height: 330px;">
+        <div class="col-xs-offset-2 col-xs-8">
+            <div class="chart-toggle-btns">
+                <div class="col-sm-3 col-xs-6 text-right">
+                    <a class="btn" title="Stacked Chart" alt="Stacked Chart" id="stackedImage"><i class="fa fa-2x fa-area-chart chart-form-btn" ></i></a>
+                </div>
+                <div class="col-sm-3 col-xs-6 text-right">
+                    <a class="btn" title="Focus Line Chart" alt="Focus Line Chart" id="lineImage"><i class="fa fa-2x fa-line-chart chart-form-btn"></i></a>
+                </div>
             </div>
-		    <div class="col-sm-3 col-xs-6 text-right">
-                <a class="btn" title="Focus Line Chart" alt="Focus Line Chart" id="lineImage"><i class="fa fa-2x fa-line-chart chart-form-btn"></i></a>
+        </div>
+        <div class="col-xs-offset-2 col-xs-8">
+            <div class='chart full' id='stackedchart' >
+                <svg style="height: 390px;width: 100%;"></svg>
             </div>
-		</div>
-	</div>
-	<div class="col-xs-offset-2 col-xs-8">
-		<div class='chart full' id='stackedchart' >
-		    <svg style="height: 390px;width: 100%;"></svg>
-		</div>
-		<div id="linefocuschart" class='with-3d-shadow with-transitions'>
-		    <svg style="height: 390px;width: 100%;"></svg>
-		</div>
-	</div>
-</div>
+            <div id="linefocuschart" class='with-3d-shadow with-transitions'>
+                <svg style="height: 390px;width: 100%;"></svg>
+            </div>
+        </div>
+    </div>
 {{ end }}
 {{ define "scripts" }}
-<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/static/js/enforcement-reporting.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/enforcement-reporting.js"></script>
 {{ end }}

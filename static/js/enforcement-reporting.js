@@ -1,3 +1,5 @@
+'use strict';
+
 // Declare enforcement-reporting script variabels
 var classdat = [];
 var stackchart;
@@ -6,13 +8,12 @@ var lineChartShown = false;
 var myColors = [ "#e29a75", "#7eb7b0", "#f5de74"];  //"#99ABBF"
 d3.scale.myColors = function() {
     return d3.scale.ordinal().range(myColors);
-}; 
+};
 
 /**
  * Retrieving the data and build\populate the corresponding chart(s)
  */
 function retrieveFDAData() {
-
   /**
    * Calls the FDA REST web service API to obtain the request data sets.
    * Results will contain a time and a count of reports meeting the requested
@@ -24,7 +25,7 @@ function retrieveFDAData() {
   }
 
   /**
-   * Execute the asynchronous web service calls and wait for all to 
+   * Execute the asynchronous web service calls and wait for all to
    * complete, so the data can be accurately aggregated.
    */
   $.when( getReportCounts("Class%20I"),
@@ -37,8 +38,8 @@ function retrieveFDAData() {
        	   var val3 = parseFDAResult(classIIIReports[0].results);
 
       	   // data set consistency check required to ensure all series have values for same dates
-           val2 = consistencyCheck(val1, val2);            
-      	   val3 = consistencyCheck(val1, val3); 
+           val2 = consistencyCheck(val1, val2);
+      	   val3 = consistencyCheck(val1, val3);
 
       	   // construct the data set for the charts
            classdat = [
@@ -53,7 +54,7 @@ function retrieveFDAData() {
       	       {
       	          "key"   : "Class III",
       	          "values": val3
-      	       } 
+      	       }
       	   ];
 
           // Initiate the stacked area chart first.  The line chart lazy loads.
@@ -64,65 +65,70 @@ function retrieveFDAData() {
 /**
  * Format data into expected format for the chart controls.
  * The charts expect an array of [time, count] arrays:
- * 
- *   For example: 
+ *
+ *   For example:
  *   [ [123456789, 23], [123459876, 2], [133359336, 5] ]
  *
  * @param {Object} master
  */
 function parseFDAResult(results) {
   var parsedresult = [];
-  for (i = 0; i < results.length; i++) {
-    timex = results[i].time;
-    timex = new Date(timex.substring(0,4)+" "+timex.substring(4,6)+" "+timex.substring(6,8)).getTime();
-    countx = results[i].count;
-    item = [];
+  for (var i = 0; i < results.length; i++) {
+    var timex = results[i].time;
+    timex = new Date(timex.substring(0,4)+'/'+timex.substring(4,6)+'/'+timex.substring(6,8)).getTime();
+    var countx = results[i].count;
+
+    var item = [];
     item.push(timex);
     item.push(countx);
+
     parsedresult.push(item);
   }
   return parsedresult;
 }
- 
+
 /**
  * Compare list of report dates to a master list of dates to
  * ensure each item in the series contains a date.  The series
  * charts will not work unless every group has a number for
- * every report date.  
+ * every report date.
  *
  * @param {Object} master
  * @param {Object} checkAry
- */ 
+ */
 function consistencyCheck(master, checkAry) {
   var newAry = [];
-  for (i = 0; i < master.length; i++) {
-    rpt_date = master[i][0];
-    count = 0;
-    for (j = 0; j < checkAry.length; j++) {
+  for (var i = 0; i < master.length; i++) {
+    var rpt_date = master[i][0];
+    var count = 0;
+
+    for (var j = 0; j < checkAry.length; j++) {
       if (rpt_date == checkAry[j][0]) {
          count = checkAry[j][1];
          break;
-      } 
+      }
     }
-    item = [];
+
+    var item = [];
     item.push(rpt_date);
     item.push(count);
+
     newAry.push(item);
   }
   return newAry;
 }
-  
+
 /**
- * Generates a stacked area chart which provides an aggregated view 
- * of all the series data, and allows filtering down to specific 
+ * Generates a stacked area chart which provides an aggregated view
+ * of all the series data, and allows filtering down to specific
  * series values.
  *
  * Utilizes the FDA food recall reports data module, presents the user
- * with a view to report data grouped by classification (Class I, II, III) 
+ * with a view to report data grouped by classification (Class I, II, III)
  *
  * @param {Object} container
  * @param {Object} data
- */   
+ */
 function createStackedChart(container, data) {
   nv.addGraph(function() {
     stackchart = nv.models.stackedAreaChart()
@@ -138,10 +144,10 @@ function createStackedChart(container, data) {
     return stackchart;
   });
 }
-   
+
 /**
- * Generates a line chart with a focus/selection slider to zoom in 
- * on a specific time period represented in the graph.  The chart 
+ * Generates a line chart with a focus/selection slider to zoom in
+ * on a specific time period represented in the graph.  The chart
  * will be hidden at first, and users will toggle to it.
  *
  * @param {Object} container
@@ -153,7 +159,7 @@ function createLineChart(container, data) {
                   .x(function(d) { return d[0] })
                   .y(function(d) { return d[1] })
                   .color(d3.scale.myColors().range());
- 
+
       linechart.xAxis.tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
       linechart.x2Axis.tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
       linechart.yAxis.tickFormat(d3.format(',.0f'));
@@ -164,32 +170,30 @@ function createLineChart(container, data) {
       return linechart;
     });
 }
- 
-/**
- * Creates the toggle logic for swithing between the stacked area
- * and the line charts. 
- */
-$(document).ready(function(){
-  $("#stackedImage").click(function(){
-     if (lineChartShown) {
-         $("#linefocuschart").fadeOut();
-     }
-     $("#stackedchart").fadeIn();
-  });
-  $("#lineImage").click(function(){
-     $("#stackedchart").fadeOut();
-     if (!lineChartShown) {
-       $("#linefocuschart").fadeIn();
-       createLineChart("linefocuschart", classdat);
-     } else {
-       $("#linefocuschart").fadeIn();
-     }
-  });
-});
 
 /**
- * Kick of the chart data request and build the charts 
+ * Kick of the chart data request and build the charts
  */
 $(function () {
+    /**
+     * Creates the toggle logic for swithing between the stacked area
+     * and the line charts.
+     */
+    $("#stackedImage").click(function(){
+       if (lineChartShown) {
+           $("#linefocuschart").fadeOut();
+       }
+       $("#stackedchart").fadeIn();
+    });
+    $("#lineImage").click(function(){
+       $("#stackedchart").fadeOut();
+       if (!lineChartShown) {
+         $("#linefocuschart").fadeIn();
+         createLineChart("linefocuschart", classdat);
+       } else {
+         $("#linefocuschart").fadeIn();
+       }
+    });
+
     retrieveFDAData();
 });
