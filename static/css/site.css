@@ -126,14 +126,13 @@ body {
     padding: 5em;
 }
 
-<<<<<<< HEAD
 /* Analytics header image and menu */
 #spotlight {
     background-image: url('/static/img/feature.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-=======
+
 .navbar-brand {
     padding: 7px 15px 0;
 }
