@@ -53,6 +53,16 @@
 	color: #fff !important;
 }
 
+.fg-gray-3,
+.fg-gray-3 a:link,
+.fg-gray-3 a:visited {
+    color: #757575 !important;
+}
+
+.fg-gray-3 a:hover {
+	color: #434343 !important;
+}
+
 .fg-black,
 .fg-black a:link,
 .fg-black a:hover,
@@ -135,6 +145,7 @@
 body {
     font-size: 12px;
     font-family: "proxima-nova", sans-serif;
+    color: #434343;
 }
 
 a {
@@ -294,6 +305,8 @@ p {
 .profile {
     position: relative;
     padding: 0;
+    background-size: cover;
+    background-position: center center;
 }
 
 .profile img {
@@ -311,25 +324,19 @@ p {
 
 .bethany {
     background-image: url('/static/img/bethany.jpg');
-    background-position: center;
 }
 .joey {
     background-image: url('/static/img/joey.jpg');
-    background-position: center;
 }
 .john {
     background-image: url('/static/img/john.jpg');
-    background-position: center;
 }
 .krystal {
     background-image: url('/static/img/krystal.jpg');
-    background-position: center;
 }
 .paul {
     background-image: url('/static/img/paul.jpg');
-    background-position: center;
 }
 .sara {
     background-image: url('/static/img/sara.jpg');
-    background-position: center;
 }
