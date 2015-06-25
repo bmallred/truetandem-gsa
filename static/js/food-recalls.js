@@ -1,3 +1,147 @@
+function RecallingFirmStatsModal(firm){
+	var me = this;
+	var apiUrl = 'https://api.fda.gov/food/enforcement.json';
+	var apiKey = 'xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv';
+	var modalTemplate = Hogan.compile($('#modal_template').html(), {
+		delimiters: '<% %>'
+	});
+    var $modal = null;
+    
+    this.show = function(){
+    	this.getRecallStatistics().then(function(data){
+	        $('#modal_container').html(modalTemplate.render({
+	        	success:true,
+	            firm: firm,
+	            totalRecalls: data.totalRecalls,
+	            recallCountsByState: data.recallCountsByState,
+	            recallCountsByYear: data.recallCountsByYear
+	        }));        	        	        
+            me.preparePieChart(data.recallCountsByYear, '.year-recalls', 'year', 'count');
+            me.prepareBarChart(data.recallCountsByState, 'Recalls by State', '.state-recalls', 'term', 'count');
+	        
+	        $modal = $('#modal').modal();    		
+    	}, function(error){
+	        $('#modal_container').html(modalTemplate.render({
+	        	success:false,
+	        	firm:firm
+	        }));  
+    		$modal = $('#modal').modal(); 
+    	});
+    }
+
+    this.preparePieChart = function(data, element, xKey, yKey){
+		var chart = nv.models.pieChart()
+			.x(function(d) { return d[xKey] })
+			.y(function(d) { return d[yKey] })			
+			.showLabels(true)
+			.labelType("value");
+		d3.select(element)
+			.datum(function(){
+			return data;
+		})
+		.transition().duration(350)
+		.call(chart);
+    }
+
+    this.prepareBarChart = function(data, title, element, xKey, yKey){	    
+		var chart = nv.models.discreteBarChart()
+		      .x(function(d) { return d[xKey]; })    //Specify the data accessors.
+		      .y(function(d) { return d[yKey]; })
+		      .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+		      .tooltips(false)        //Don't show tooltips
+		      .showValues(true);       //...instead, show the bar value right on top of each bar.
+		      
+		  d3.select(element)
+		      .datum(function(){
+		      	return [{
+		      		key: title,
+		      		values: data
+		      	}];
+		      })
+		      .call(chart);
+
+		  nv.utils.windowResize(chart.update);	
+    }
+
+    this.getRecallStatistics = function(){
+    	var deferred = $.Deferred();
+    	var errorFunc = function(){
+    		deferred.reject('Unable to query information for company: ' + firm);
+    	};
+    	this.getRecallDates().then(function(recallDatesResponse){
+    		var recallCountsByYear = me.getRecallCountsByYear(recallDatesResponse.results);
+    		var totalRecalls = 0;
+    		for(var x = 0; x <recallCountsByYear.length; x++){
+    			totalRecalls += recallCountsByYear[x].count;
+    		}
+    		me.getRecallCountsByState().then(function(recallCountsByStateResponse){
+    			deferred.resolve({
+    				totalRecalls: totalRecalls,
+    				recallCountsByState: recallCountsByStateResponse.results,
+    				recallCountsByYear: me.getRecallCountsByYear(recallDatesResponse.results)
+    			});
+    		}, errorFunc);
+    	}, errorFunc
+    	);
+
+    	return deferred;
+    }
+
+
+    /**
+      * Extracts recall counts and groups them by year.
+     **/
+    this.getRecallCountsByYear = function(recalls){
+        var counts = {};
+        for(var x = 0; x < recalls.length; x++){        	
+        	var recallPoint = recalls[x];
+        	var dateStr = recallPoint.time;
+        	var recallYear = dateStr.substr(0,4);
+        	if(!counts[recallYear]){
+        		counts[recallYear] = recallPoint.count;
+        	} else {
+        		counts[recallYear] += recallPoint.count;
+        	}        	
+        }
+
+        var recalls = [];
+        for(var key in counts){
+        	recalls.push({
+        		year: key,
+        		count: counts[key]
+        	});
+        }
+        return recalls;
+    }
+
+    this.getRecallCountsByState = function(){
+    	var formattedFirm = '"' + this.getFormattedFirm() + '"';
+        return $.getJSON(apiUrl, {
+        		search:formattedFirm, 
+        		count:'state.exact',
+        		'api_key': apiKey
+        	}, function(response){
+        	return response.results;
+        })
+    }
+
+    this.getRecallDates = function(){
+    	var formattedFirm = '"' + this.getFormattedFirm() + '"';
+        return $.getJSON(apiUrl, {
+        		search:formattedFirm, 
+        		count:'report_date',
+        		'api_key': apiKey
+        	}, function(response){
+        	return response.results;
+        });
+    }
+
+    // Removes special characters in order to properly query the FDA api.
+    this.getFormattedFirm = function(){
+    	return firm.replace(/[^\w\s-]/gi, '');
+    }
+}
+
 /**
   * Handles google map operations.
   *
@@ -79,6 +223,7 @@ function FoodRecalls(gridEl){
 	var me = this;
 	var geospatial = new Geospatial('map-canvas');
 	var foodRecallApiUrl = 'https://api.fda.gov/food/enforcement.json';
+	var apiKey = 'xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv';
 
 	var detailsTemplate = Hogan.compile($('#details_template').html(), {
 		delimiters: '<% %>'
@@ -92,13 +237,16 @@ function FoodRecalls(gridEl){
 	this.createGrid = function(){		
 		$grid = $table.DataTable({
 			"serverSide": true,		
-			searching: false,	
+			searching: true,	
+			bSort: false,
 			iDisplayLength: 25,
+			autoWidth: true,
 			fnServerData: this.processServerDataResponse,
 			"columns" : [
-				{data : 'recall_number'},
+				{data : 'recall_number', width: 90},
 				{data : 'recalling_firm'},
-				{data : 'state'}
+				{data:  'classification', width:40},
+				{data : 'state', width:40}
 			]
 		});
 	}
@@ -113,6 +261,12 @@ function FoodRecalls(gridEl){
 	// Configures handlers for the table
 	this.configureHandlers = function(){
 		$table.on('click', 'tr', this.onRowClick);
+		$detailsSection.on('click', '.recalling-firm', this.showRecallingFirm);
+	}
+	
+	this.showRecallingFirm = function(){
+        var data = $(this).data('recallingFirm');
+        new RecallingFirmStatsModal(data).show();
 	}
 
 	// Renders the data for a specific food recall and renders it to a template
@@ -136,10 +290,16 @@ function FoodRecalls(gridEl){
 	this.processServerDataResponse = function(source, data, callback){		
 		var start = data[3].value;
 		var limit = data[4].value;
+		var freeSearchText = data[5].value;
 		var params = {
 			skip: start,
-			limit: limit
-		};			
+			limit: limit,
+			'api_key': apiKey
+		};
+		console.log('Search...');
+		if(freeSearchText && freeSearchText.value){
+			params.search = '"' + freeSearchText.value + '"';
+		}
 		$.getJSON(foodRecallApiUrl, params, function(response){
 			response.draw  = data[0].value;
 			response.recordsTotal = response.meta.results.total;
