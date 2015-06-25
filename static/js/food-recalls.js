@@ -259,7 +259,6 @@ function FoodRecalls(gridEl){
 	this.onRowClick = function(event){
 		var data = $grid.row(this).data();
 		$table.find('tr').removeClass('info');
-		$(this).addClass('info');
 		me.renderDetails(data);
 	}
 
@@ -277,6 +276,15 @@ function FoodRecalls(gridEl){
 	// Renders the data for a specific food recall and renders it to a template
 	this.renderDetails = function(data){		
 		$detailsSection.html(detailsTemplate.render(data));
+		
+		// Highlight table row with matching data point
+		$table.find('tbody tr').each(function(){
+			var curDataRow = $grid.row($(this)).data();
+			if(curDataRow.recall_number == data.recall_number){
+				$(this).addClass('info');
+			}
+		});
+
 		if(!geospatial.mapLoaded()){
 			geospatial.initialize();
 		}
