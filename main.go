@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// init congigures the routes used for Google AppEngine.
+// init configures the routes used for Google AppEngine.
 func init() {
 	time.Local = time.UTC
 
@@ -24,5 +24,5 @@ func init() {
 // main executes the normal command execution.
 func main() {
 	log.Println("Serving content on", "http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatalln(http.ListenAndServe(":8080", nil))
 }
