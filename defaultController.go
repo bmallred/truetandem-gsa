@@ -2,19 +2,25 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
+)
+
+var (
+	templateMaster       string = "html/master.html"
+	templateIndex        string = "html/defaultIndex.html"
+	templateOrganization string = "html/defaultOrganization.html"
+	templateContact      string = "html/defaultContact.html"
+	templateThankYou     string = "html/defaultThankYou.html"
 )
 
 // DefaultIndex renders the default page of the default controller.
 func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/defaultIndex.html",
+		templateMaster,
+		templateIndex,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -22,12 +28,11 @@ func DefaultIndex(w http.ResponseWriter, r *http.Request) {
 // DefaultOrganization renders the organization page of the default controller.
 func DefaultOrganization(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/defaultOrganization.html",
+		templateMaster,
+		templateOrganization,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -39,12 +44,11 @@ func DefaultContact(w http.ResponseWriter, r *http.Request) {
 
 	if email == "" || message == "" {
 		t := template.Must(template.ParseFiles(
-			"html/master.html",
-			"html/defaultContact.html",
+			templateMaster,
+			templateContact,
 		))
 
 		if err := t.Execute(w, nil); err != nil {
-			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	} else {
@@ -58,14 +62,14 @@ func DefaultContact(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DefaultThankYou renders the thank you page after submitting feedback.
 func DefaultThankYou(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/defaultThankYou.html",
+		templateMaster,
+		templateThankYou,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

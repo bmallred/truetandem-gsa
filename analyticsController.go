@@ -2,32 +2,23 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 )
 
-// AnalyticsIndex renders the default page of the analytics controller.
-func AnalyticsIndex(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/analyticsIndex.html",
-	))
-
-	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
+var (
+	templateFoodRecalls          string = "html/food-recalls.html"
+	templateEnforcementReporting string = "html/enforcement-reporting.html"
+	templateAdverseEvents        string = "html/adverse-events.html"
+)
 
 // FoodRecalls renders the food recall dashboard of the analytics controller.
 func FoodRecalls(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/food-recalls.html",
+		templateMaster,
+		templateFoodRecalls,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -35,12 +26,11 @@ func FoodRecalls(w http.ResponseWriter, r *http.Request) {
 // EnforcementReporting renders the enforcement reporting dashboard of the analytics controller.
 func EnforcementReporting(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/enforcement-reporting.html",
+		templateMaster,
+		templateEnforcementReporting,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -48,12 +38,11 @@ func EnforcementReporting(w http.ResponseWriter, r *http.Request) {
 // AdverseEvents renders the adverse events dashboard of the analytics controller.
 func AdverseEvents(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"html/master.html",
-		"html/adverse-events.html",
+		templateMaster,
+		templateAdverseEvents,
 	))
 
 	if err := t.Execute(w, nil); err != nil {
-		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
