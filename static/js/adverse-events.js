@@ -31,6 +31,8 @@ function AdverseEvents(gridEl) {
         }
 
         this.createGrid(gridEl);
+        this.createSeriousnessChart();
+        this.createReportedEvents();
         this.configureHandlers();
     };
 
@@ -71,11 +73,35 @@ function AdverseEvents(gridEl) {
     };
 
     /**
-     * Create all necessary charts.
+     * Determines the seriousness to be used in the calculations based on
+     * the applied filters.
+     *
+     * @returns
+     *  The serious value
      */
-    this.createCharts = function() {
-        this.createSeriousnessChart();
-        this.createReportedEvents();
+    this.seriousness = function() {
+        if (!pieChart) {
+            return 0;
+        }
+
+        var serious = false;
+        var lessSerious = false;
+        for (var i = 0; i < pieChart.filters().length; i++) {
+            var f = pieChart.filters()[i];
+            if (f === 'Serious') {
+                serious = true;
+            } else if (f === 'Less serious') {
+                lessSerious = true;
+            }
+        }
+
+        if (serious && !lessSerious) {
+            return 1;
+        } else if (!serious && lessSerious) {
+            return 2;
+        }
+
+        return 0;
     };
 
     /**
@@ -114,8 +140,12 @@ function AdverseEvents(gridEl) {
                 .innerRadius(25)
                 .dimension(dimension)
                 .group(group)
-                .legend(dc.legend());
-            pieChart.render();
+                .legend(dc.legend())
+                .on('filtered', function () {
+                    me.createReportedEvents();
+                    datatable.ajax.reload();
+                })
+                .render();
         });
     };
 
@@ -126,6 +156,12 @@ function AdverseEvents(gridEl) {
         var startDate = me.convertDate(new Date($('.start-date').val()));
         var endDate = me.convertDate(new Date($('.end-date').val()));
         var search = 'receivedate:[' + startDate + '+TO+' + endDate + ']';
+
+        var seriousness = me.seriousness();
+        if (seriousness !== 0) {
+            search += '+AND+serious:' + seriousness;
+        }
+
         var params =
             'api_key=' + apiKey
             + '&search=' + search
@@ -146,7 +182,7 @@ function AdverseEvents(gridEl) {
 
             seriesChart = dc.lineChart('#series-chart');
             seriesChart
-                .width(700)
+                .width(640)
                 .height(200)
                 .x(d3.time.scale().domain([new Date($('.start-date').val()), new Date($('.end-date').val())]))
                 .round(d3.time.month.round)
@@ -158,7 +194,7 @@ function AdverseEvents(gridEl) {
                 .elasticY(true)
                 .dimension(dimension)
                 .group(group);
-            seriesChart.margins().left = 60;
+            seriesChart.margins().left = 42;
             seriesChart.render();
         });
     };
@@ -167,6 +203,7 @@ function AdverseEvents(gridEl) {
      * Create our datatable grid.
      **/
     this.createGrid = function() {
+        $.fn.dataTableExt.pager.numbers_length = 5;
         datatable = $table.DataTable({
             destroy: true,
             autoWidth: false,
@@ -306,6 +343,8 @@ function AdverseEvents(gridEl) {
         $('.date').on('changeDate', function (e) {
             if (datatable) {
                 datatable.ajax.reload();
+                me.createSeriousnessChart();
+                me.createReportedEvents();
             }
         });
     };
@@ -326,6 +365,12 @@ function AdverseEvents(gridEl) {
         var startDate = me.convertDate(new Date($('.start-date').val()));
         var endDate = me.convertDate(new Date($('.end-date').val()));
         var search = 'receivedate:[' + startDate + '+TO+' + endDate + ']';
+
+        var seriousness = me.seriousness();
+        if (seriousness !== 0) {
+            search += '+AND+serious:' + seriousness;
+        }
+
         var params = 'api_key=' + apiKey
             + '&skip=' + start
             + '&limit=' + limit
@@ -338,7 +383,6 @@ function AdverseEvents(gridEl) {
             response.data = response.results;
             callback(response);
             data = response.results;
-            me.createCharts(data);
         });
     };
 
