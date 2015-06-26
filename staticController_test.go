@@ -8,7 +8,7 @@ import (
 
 // TestStaticFiles gets a static resource file. This is typically used for stylesheets, JavaScript, images, etc.
 func TestStaticFiles(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(DefaultIndex))
+	server := httptest.NewServer(http.HandlerFunc(StaticFiles))
 	defer server.Close()
 
 	url := server.URL + "/static/css/site.css"

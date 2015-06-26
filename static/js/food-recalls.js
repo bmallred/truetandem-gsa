@@ -1,3 +1,5 @@
+'use strict'
+
 function RecallingFirmStatsModal(firm){
 	var me = this;
 	var apiUrl = 'https://api.fda.gov/food/enforcement.json';
@@ -15,10 +17,10 @@ function RecallingFirmStatsModal(firm){
 	            totalRecalls: data.totalRecalls,
 	            recallCountsByState: data.recallCountsByState,
 	            recallCountsByYear: data.recallCountsByYear
-	        }));        	        	
-            me.prepareBarChart(data.recallCountsByYear, '.year-recalls', 'year', 'count');
-            me.prepareBarChart(data.recallCountsByState, '.state-recalls', 'term', 'count');
-            console.log(data.recallCountsByState);
+	        }));        	        	        
+            me.preparePieChart(data.recallCountsByYear, '.year-recalls', 'year', 'count');
+            me.prepareBarChart(data.recallCountsByState, 'Recalls by State', '.state-recalls', 'term', 'count');
+	        
 	        $modal = $('#modal').modal();    		
     	}, function(error){
 	        $('#modal_container').html(modalTemplate.render({
@@ -29,52 +31,38 @@ function RecallingFirmStatsModal(firm){
     	});
     }
 
-    this.prepareBarChart = function(data, element, xKey, yKey){
-		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		    width = 400 - margin.left - margin.right,
-		    height = 300 - margin.top - margin.bottom;
+    this.preparePieChart = function(data, element, xKey, yKey){
+		var chart = nv.models.pieChart()
+			.x(function(d) { return d[xKey] })
+			.y(function(d) { return d[yKey] })			
+			.showLabels(true)
+			.labelType("value");
+		d3.select(element)
+			.datum(function(){
+			return data;
+		})
+		.transition().duration(350)
+		.call(chart);
+    }
 
-		var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-		var y = d3.scale.linear().range([height, 0]);
-		var xAxis = d3.svg.axis().scale(x).orient("bottom");
-		var yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
+    this.prepareBarChart = function(data, title, element, xKey, yKey){	    
+		var chart = nv.models.discreteBarChart()
+		      .x(function(d) { return d[xKey]; })    //Specify the data accessors.
+		      .y(function(d) { return d[yKey]; })
+		      .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+		      .tooltips(false)        //Don't show tooltips
+		      .showValues(true);       //...instead, show the bar value right on top of each bar.
+		      
+		  d3.select(element)
+		      .datum(function(){
+		      	return [{
+		      		key: title,
+		      		values: data
+		      	}];
+		      })
+		      .call(chart);
 
-		var svg = d3.select(element)
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		    .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		x.domain(data.map(function(d) { return d[xKey]; }));
-		y.domain([0, d3.max(data, function(d) { return d[yKey]; })]);
-
-		  svg.append("g")
-		      .attr("class", "x axis")
-		      .attr("transform", "translate(0," + height + ")")
-		      .call(xAxis);
-
-		  svg.append("g")
-		      .attr("class", "y axis")
-		      .call(yAxis)
-		      .append("text")
-		      .attr("transform", "rotate(-90)")
-		      .attr("y", 6)
-		      .attr("dy", ".71em")
-		      .style("text-anchor", "end")
-		      .text("Recalls");
-
-			var barColorAlternator = true;
-			svg.selectAll(".bar")
-				.data(data)
-				.enter().append("rect")
-				.attr("class", function(){
-					barColorAlternator = !barColorAlternator;
-					return barColorAlternator ? 'bar' : 'bar2';
-				})
-				.attr("x", function(d) { return x(d[xKey]); })
-				.attr("width", x.rangeBand())
-				.attr("y", function(d) { return y(d[yKey]); })
-				.attr("height", function(d) { return height - y(d[yKey]); });		    
-
+		  nv.utils.windowResize(chart.update);	
     }
 
     this.getRecallStatistics = function(){
@@ -252,14 +240,20 @@ function FoodRecalls(gridEl){
 		$grid = $table.DataTable({
 			"serverSide": true,		
 			searching: true,	
+			processing: true,
+			bSort: false,
 			iDisplayLength: 25,
 			autoWidth: true,
+			bAutoWidth: false,
+			pagingType: 'full',
 			fnServerData: this.processServerDataResponse,
 			"columns" : [
-				{data : 'recall_number', width: 90},
+				{data : 'recall_number'},
 				{data : 'recalling_firm'},
-				{data:  'classification', width:40},
-				{data : 'state', width:40}
+				{data:  'classification'},
+				{render: function(d, type, row, meta){
+					return row.city + ', ' + row.state;
+				}}
 			]
 		});
 	}
@@ -267,7 +261,6 @@ function FoodRecalls(gridEl){
 	this.onRowClick = function(event){
 		var data = $grid.row(this).data();
 		$table.find('tr').removeClass('info');
-		$(this).addClass('info');
 		me.renderDetails(data);
 	}
 
@@ -284,7 +277,18 @@ function FoodRecalls(gridEl){
 
 	// Renders the data for a specific food recall and renders it to a template
 	this.renderDetails = function(data){		
+		data.formatted_recall_initiation_date = this.formatDate(data.recall_initiation_date);
+		data.formatted_report_date = this.formatDate(data.report_date);
 		$detailsSection.html(detailsTemplate.render(data));
+		
+		// Highlight table row with matching data point
+		$table.find('tbody tr').each(function(){
+			var curDataRow = $grid.row($(this)).data();
+			if(curDataRow.recall_number == data.recall_number){
+				$(this).addClass('info');
+			}
+		});
+
 		if(!geospatial.mapLoaded()){
 			geospatial.initialize();
 		}
@@ -309,7 +313,6 @@ function FoodRecalls(gridEl){
 			limit: limit,
 			'api_key': apiKey
 		};
-		console.log('Search...');
 		if(freeSearchText && freeSearchText.value){
 			params.search = '"' + freeSearchText.value + '"';
 		}
@@ -325,6 +328,15 @@ function FoodRecalls(gridEl){
 				me.renderDetails(foodRecalls[0]);
 			}
 		});		
+	}
+
+	// Simple date formatter
+	this.formatDate = function(rawDateStr){
+		return rawDateStr.substr(4,2) 
+		+ '/' 
+		+ rawDateStr.substr(6,2) 
+		+ '/' 
+		+ rawDateStr.substr(0,4);
 	}
 
 	this.initialize();
