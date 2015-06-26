@@ -102,6 +102,7 @@
 }
 
 .bg-orange,
+.bg-orange:hover,
 .bg-orange a:link,
 .bg-orange a:visited {
     background-color: #e29a75 !important;
@@ -143,7 +144,7 @@
 
 /* Twitter Bootstrap overrides */
 body {
-    font-size: 12px;
+    font-size: 15px;
     font-family: "proxima-nova", sans-serif;
     color: #434343;
 }
@@ -154,12 +155,17 @@ a {
 	transition: background-color 0.3s, color 0.3s;
 }
 
+hr {
+	border-top-width:5px;
+}
 h1, h3 {
+	font-size:48px;
     text-transform: uppercase;
 }
 
 .h3, h3 {
     font-weight: 600;
+    font-size:34px;
 }
 
 .h4, h4 {
@@ -184,6 +190,7 @@ p {
 }
 
 .footer {
+	margin-top:5em;
     padding: 5em;
 }
 
@@ -216,6 +223,7 @@ p {
 /* ! All Pages */
 .content {
 	margin-top: 50px;
+	margin-bottom:5em;
 	min-height: 80vh;
 }
 
@@ -300,6 +308,16 @@ p {
     width: 0;
     z-index: 1;
 }
+/* handle tabs with full width / height links */
+.menu-item {
+	margin-bottom:2em;
+	padding:0;
+}
+.menu-item > a, .menu-item > span {
+	display:block;
+	padding:1.5em 0;
+}
+
 
 /* ! Contact Page */
 .profile {
