@@ -251,7 +251,9 @@ function FoodRecalls(gridEl){
 				{data : 'recall_number'},
 				{data : 'recalling_firm'},
 				{data:  'classification'},
-				{data : 'state'}
+				{render: function(d, type, row, meta){
+					return row.city + ', ' + row.state;
+				}}
 			]
 		});
 	}
@@ -275,6 +277,8 @@ function FoodRecalls(gridEl){
 
 	// Renders the data for a specific food recall and renders it to a template
 	this.renderDetails = function(data){		
+		data.formatted_recall_initiation_date = this.formatDate(data.recall_initiation_date);
+		data.formatted_report_date = this.formatDate(data.report_date);
 		$detailsSection.html(detailsTemplate.render(data));
 		
 		// Highlight table row with matching data point
@@ -324,6 +328,15 @@ function FoodRecalls(gridEl){
 				me.renderDetails(foodRecalls[0]);
 			}
 		});		
+	}
+
+	// Simple date formatter
+	this.formatDate = function(rawDateStr){
+		return rawDateStr.substr(4,2) 
+		+ '/' 
+		+ rawDateStr.substr(6,2) 
+		+ '/' 
+		+ rawDateStr.substr(0,4);
 	}
 
 	this.initialize();

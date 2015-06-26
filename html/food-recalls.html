@@ -57,7 +57,7 @@
                                 <th>Recall Number</th>
                                 <th>Firm</th>
                                 <th>Classification</th>
-                                <th>State</th>
+                                <th>Location</th>
                             </tr>
                         </thead>
                     </table>
@@ -137,11 +137,11 @@
             <div class="row">
                 <div class="col-xs-6">
                     <strong>Recall Initiation Date</strong>
-                    <div><% recall_initiation_date %></div>
+                    <div><% formatted_recall_initiation_date %></div>
                 </div>
                 <div class="col-xs-6">
                     <strong>Report Date</strong>
-                    <div><% report_date %></div>
+                    <div><% formatted_report_date %></div>
                 </div>
             </div>
             <div class="row">
@@ -155,24 +155,29 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-6">
                     <strong>Voluntary Mandated</strong>
                     <div><% voluntary_mandated %></div>
                 </div>
-            </div>
+                <%# product_quantity %>
+                    <div class="col-xs-6">
+                        <strong>Product Quantity</strong>
+                        <div><% product_quantity %></div>
+                    </div>
+                <%/ product_quantity %>                
+            </div>            
+            <div class="row">
+                <div class="col-xs-12">
+                    <strong>Code Information</strong>
+                        <div><% code_info %></div>
+                </div>
+            </div>            
             <div class="row">
                 <div class="col-xs-12">
                     <strong>Product Description</strong>
                     <div><% product_description %></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <strong>Product Quantity</strong>
-                    <div><% product_quantity %></div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-xs-12">
                     <strong>Distribution Pattern</strong>
