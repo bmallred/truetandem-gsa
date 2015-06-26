@@ -42,6 +42,7 @@ build:
         - script:
             name: go test
             code: |-
+                go get golang.org/x/tools/cmd/cover
                 go get github.com/axw/gocov/gocov
                 gocov test . > coverage.json
 
