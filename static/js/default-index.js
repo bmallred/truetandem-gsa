@@ -1,9 +1,6 @@
 'use strict';
 
 // Declare default-index script variabels
-var stackbarchart;
-var donutchart1;
-var donutchart2;
 var apiKey = "xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv";
 var myColors = [ "#99ABBF", "#7eb7b0", "#e29a75"];  //#e29a75 #f5de74
 d3.scale.myColors = function() {
@@ -11,7 +8,10 @@ d3.scale.myColors = function() {
 };
 
 /**
- *  Generate a stacked bar chart
+ * Generate a stacked bar chart utilizing the nvd3 charting library
+ *
+ * @param {String} chartname
+ * @param {Object} chartdata
  */
 function generateBarChart(chartname, chartdata) {
   nv.addGraph(function() {
@@ -30,7 +30,10 @@ function generateBarChart(chartname, chartdata) {
 }
 
 /**
- * Generate a donut chart graph
+ * Generate a pie chart utilizing the nvd3 charting library
+ *
+ * @param {String} chartname
+ * @param {Object} chartdata
  */
 function generateDonutChart(chartname, chartdata) {
   nv.addGraph(function() {
@@ -62,7 +65,8 @@ $(function () {
 });
 
 /**
- * Kick of the chart data request and build the charts 
+ * Retrieves data via the FDA API and proceeds to format the data
+ * for the chart presentation layer, then generates the charts. 
  */
 function retrieveChartData() {
   /**
@@ -119,7 +123,7 @@ function retrieveChartData() {
  *   For example: 
  *   [ [2012, 100], [2013, 200], [2014, 300] ]
  *
- * @param {Object} master
+ * @param {Object} results
  */
 function parseFDAResult(results) {
   var parsedresult = [];
@@ -176,8 +180,7 @@ function retrieveDonutChart1Data(class1, class2, class3) {
         "value" : classIIIdat
       } , 
     ];
-   donutchart1 = generateDonutChart("classdonutchart1", donutData);
-  return  
+    generateDonutChart("classdonutchart1", donutData); 
 }
 
 /**
@@ -224,20 +227,38 @@ function updatePieDescription(total, year) {
  * Pie chart sample data
  */
 function retrieveDonutChart2Data() {
-  var donutData =[
-      { 
-        "label": "Class I",
-        "value" : 1300
-      } , 
-      { 
-        "label": "Class II",
-        "value" : 1760
-      } , 
-      { 
-        "label": "Class III",
-        "value" : 423
-      } , 
-    ];
-   donutchart2 = generateDonutChart("classdonutchart2", donutData);
-  return  
+  /**
+   * Calls the FDA REST web service API to obtain the request data sets.
+   * Results will contain a status and a count of reports by status
+   */
+  var getStatusCounts = function(){
+    var today = new Date();
+    var year  = today.getFullYear();
+    var date  = ("0" + today.getDate()).slice(-2);
+    var month = ("0" + (today.getMonth()+1)).slice(-2);
+    var url="https://api.fda.gov/food/enforcement.json?search=report_date:["
+          + year + "0101+TO+"
+          + year + month + date +"]"
+          + "&count=status&api_key="
+          + apiKey;
+    return $.get(url, "", null, "json");
+  }
+
+  /**
+   * Execute service call
+   */
+  $.when( getStatusCounts()
+        ).done(function(statusReports) {
+          var results = statusReports.results;
+          var donutData = [];
+          for(var i = 0; i < results.length; i++) {
+            var item = {};
+            item.label = results[i].term;
+            item.value = results[i].count;
+            donutData.push(item);
+          }
+
+          // generate the donut chart with the dataset
+          generateDonutChart("classdonutchart2", donutData);
+  });
 }
