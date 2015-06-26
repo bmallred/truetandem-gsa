@@ -22,4 +22,6 @@ _testmain.go
 *.exe
 *.test
 *.prof
+bundle.zip
+coverage.out
 truetandem-gsa
