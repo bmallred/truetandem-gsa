@@ -1,4 +1,9 @@
+'use strict';
+
 // Declare default-index script variabels
+var stackbarchart;
+var donutchart1;
+var donutchart2;
 var apiKey = "xKEbXQ6J58IGdIF5JhcBiWQOfDFWjjRTYbOYtDOv";
 var myColors = [ "#99ABBF", "#7eb7b0", "#e29a75"];  //#e29a75 #f5de74
 d3.scale.myColors = function() {
@@ -6,47 +11,43 @@ d3.scale.myColors = function() {
 };
 
 /**
- *  
+ *  Generate a stacked bar chart
  */
-function generateBarChart() {
-  var chartdata = retrieveBarData();
+function generateBarChart(chartname, chartdata) {
   nv.addGraph(function() {
-      var barchart = nv.models.multiBarChart()
-        .showControls(true)
-        .groupSpacing(.3)
-        .color(d3.scale.myColors().range());
+    var barchart = nv.models.multiBarChart()
+      .showControls(true)
+      .stacked(false)
+      .groupSpacing(.3)
+      .color(d3.scale.myColors().range());
 
-      barchart.xAxis.tickFormat(d3.format(',f'));
-      barchart.yAxis.tickFormat(d3.format(',f'));
-      d3.select('#classbarchart svg').datum(chartdata).call(barchart);
+    barchart.yAxis.tickFormat(d3.format(',f'));
+    d3.select('#'+chartname+' svg').datum(chartdata).call(barchart);
 
-      nv.utils.windowResize(barchart.update);
-
-      return barchart;
+    nv.utils.windowResize(chartname.update);
+    return barchart;
   });
 }
 
 /**
- *  
+ * Generate a donut chart graph
  */
-function generateDonutChart() {
-//Donut chart example
-nv.addGraph(function() {
-    var donutdata = retrieveDonutData();
+function generateDonutChart(chartname, chartdata) {
+  nv.addGraph(function() {
     var donutchart = nv.models.pieChart()
-        .x(function(d) { return d.label })
-        .y(function(d) { return d.value })
-        .showLabels(true) 
-        .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-        .labelType("key") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-        .donut(true)         
-        .donutRatio(0.4)
-        .color(d3.scale.myColors().range());     
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .showLabels(true) 
+      .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+      .labelType("key") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
+      .donut(true)         
+      .donutRatio(0.4)
+      .color(d3.scale.myColors().range());     
 
-      d3.select("#classdonutchart svg")
-          .datum(donutdata)
-          .transition().duration(350)
-          .call(donutchart);
+    d3.select("#"+chartname+" svg")
+        .datum(chartdata)
+        .transition().duration(350)
+        .call(donutchart);
 
     return donutchart;
   });
@@ -56,13 +57,174 @@ nv.addGraph(function() {
  * Kick of the chart data request and build the charts 
  */
 $(function () {
-    generateBarChart();
-    generateDonutChart();
+    retrieveChartData();
+    retrieveDonutChart2Data();
 });
 
-//Pie chart example data. Note how there is only a single array of key-value pairs.
-function retrieveDonutData() {
-  return  [
+/**
+ * Kick of the chart data request and build the charts 
+ */
+function retrieveChartData() {
+  /**
+   * Calls the FDA REST web service API to obtain the request data sets.
+   * Results will contain a time and a count of reports meeting the requested
+   * classification: Class I, Class II, or Class III
+   */
+  var getReportCounts = function(clscode){
+    var url="https://api.fda.gov/food/enforcement.json?search=classification:Class%20"+clscode+"&count=report_date&api_key="+apiKey;
+    return $.get(url, "", null, "json");
+  }
+
+  /**
+   * Execute the asynchronous web service calls and wait for all to 
+   * complete, so the data can be accurately aggregated.
+   */
+  $.when( getReportCounts("I"),
+          getReportCounts("II"),
+          getReportCounts("III")
+        ).done(function(classIReports, classIIReports, classIIIReports) {
+           // build the values
+           var val1 = parseFDAResult(classIReports[0].results);
+           var val2 = parseFDAResult(classIIReports[0].results);
+           var val3 = parseFDAResult(classIIIReports[0].results);
+
+           // construct the data set for the charts
+           var classdat = [
+               {
+                  "key"   : "Class I" ,
+                  "values": val1
+               } ,
+               {
+                  "key"   : "Class II",
+                  "values": val2
+               },
+               {
+                  "key"   : "Class III",
+                  "values": val3
+               } 
+           ];
+
+        // Initiate the bar chart
+        generateBarChart("classbarchart", classdat);
+
+        // Initiate the donut chart that leverages the same data as the bar chart
+        retrieveDonutChart1Data(val1, val2, val3); 
+  });
+}
+
+/**
+ * Format data into expected format for the chart controls.
+ * The charts expect an array of [year, count] arrays:
+ * 
+ *   For example: 
+ *   [ [2012, 100], [2013, 200], [2014, 300] ]
+ *
+ * @param {Object} master
+ */
+function parseFDAResult(results) {
+  var parsedresult = [];
+  var items = [0,0,0,0,0,0,0,0,0,0];
+  for (var i = 0; i < results.length; i++) {
+    var year = results[i].time;
+    var idx = parseInt(year.substring(3,4));
+    var countx = parseInt(results[i].count);
+    items [idx] += countx;    
+  }
+  for (var j = 0; j < items.length; j++) {
+    if (items[j] > 0) {
+      var item = {};
+      item.x = (2010 + j).toString();
+      item.y = items[j];
+      parsedresult.push(item);
+    }
+  }
+  
+  return parsedresult;
+}
+
+
+/**
+ * Generate a pie chart to reflect the FDA enforcement report
+ * classification breakdown.  Will reflect all reports for the 
+ * current year broken down by classification.
+ *
+ * @param {Object} class1
+ * @param {Object} class2
+ * @param {Object} class3 
+ */
+function retrieveDonutChart1Data(class1, class2, class3) {
+  var classIdat   = parseClassCount(class1);
+  var classIIdat  = parseClassCount(class2);
+  var classIIIdat = parseClassCount(class3);
+  
+  // aggregate results and update the total marker on the page
+  var total = classIdat + classIIdat + classIIIdat;
+  var year = parseCurrentYear(classIdat);
+  updatePieDescription(total,year);
+
+  var donutData =[
+      { 
+        "label": "Class I",
+        "value" : classIdat
+      } , 
+      { 
+        "label": "Class II",
+        "value" : classIIdat
+      } , 
+      { 
+        "label": "Class III",
+        "value" : classIIIdat
+      } , 
+    ];
+   donutchart1 = generateDonutChart("classdonutchart1", donutData);
+  return  
+}
+
+/**
+ * Retrieve Pie chart data from the FDA query results
+ * to determine the count of records for the current year. 
+ *
+ * @param {Object} classdata
+ */
+function parseClassCount(classdata) {
+  var result = 0;
+  if (classdata.length > 0) {
+    result = classdata[classdata.length-1].y;
+  }
+  return result;
+}
+
+/**
+ * Retrieve Pie chart data from the FDA query results
+ * to determine the current year in the results. 
+ *
+ * @param {Object} classdata
+ */
+function parseCurrentYear(classdata) {
+  var result = 0;
+  if (classdata.length > 0) {
+    result = classdata[classdata.length-1].x;
+  }
+  return result;
+}
+
+/**
+ * Retrieve Pie chart data from the FDA query results. 
+ *
+ * @param {Integer} total
+ * @param {Integer} year
+ */
+function updatePieDescription(total, year) {
+  $("#rptpiecount").text(total);
+  $("#rptcuryear span").text(year);
+  $("#rptcuryearHdr h4").text(year);
+}
+
+/**
+ * Pie chart sample data
+ */
+function retrieveDonutChart2Data() {
+  var donutData =[
       { 
         "label": "Class I",
         "value" : 1300
@@ -76,49 +238,6 @@ function retrieveDonutData() {
         "value" : 423
       } , 
     ];
-}
-
-// DELETE ME sample data generation
-
-//Generate some nice data.
-function retrieveBarData() {
-  return stream_layers(3,5,1).map(function(data, i) {
-    return {
-      key: 'Class ' + i,
-      values: data
-    };
-  });
-}
-
-function stream_layers(n, m, o) {
-  if (arguments.length < 3) o = 0;
-  function bump(a) {
-    var x = 1 / (.1 + Math.random()),
-        y = 2 * Math.random() - .5,
-        z = 10 / (.1 + Math.random());
-    for (var i = 0; i < m; i++) {
-      var w = (i / m - y) * z;
-      a[i] += x * Math.exp(-w * w);
-    }
-  }
-  return d3.range(n).map(function() {
-      var a = [], i;
-      for (i = 0; i < m; i++) a[i] = o + o * Math.random();
-      for (i = 0; i < 5; i++) bump(a);
-      return a.map(stream_index);
-    });
-}
-
-/* Another layer generator using gamma distributions. */
-function stream_waves(n, m) {
-  return d3.range(n).map(function(i) {
-    return d3.range(m).map(function(j) {
-        var x = 20 * j / m - i / 3;
-        return 2 * x * Math.exp(-.5 * x);
-      }).map(stream_index);
-    });
-}
-
-function stream_index(d, i) {
-  return {x: i, y: Math.max(0, d)};
+   donutchart2 = generateDonutChart("classdonutchart2", donutData);
+  return  
 }

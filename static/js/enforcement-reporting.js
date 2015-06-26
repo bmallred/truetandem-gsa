@@ -1,3 +1,5 @@
+'use strict';
+
 // Declare enforcement-reporting script variabels
 var classdat = [];
 var stackchart;
@@ -73,10 +75,11 @@ function retrieveFDAData() {
  */
 function parseFDAResult(results) {
   var parsedresult = [];
-  for (i = 0; i < results.length; i++) {
-    timex = results[i].time;
+  var item = [];
+  for (var i = 0; i < results.length; i++) {
+    var timex = results[i].time;
     timex = new Date(timex.substring(0,4)+" "+timex.substring(4,6)+" "+timex.substring(6,8)).getTime();
-    countx = results[i].count;
+    var countx = results[i].count;
     item = [];
     item.push(timex);
     item.push(countx);
@@ -96,10 +99,11 @@ function parseFDAResult(results) {
  */ 
 function consistencyCheck(master, checkAry) {
   var newAry = [];
-  for (i = 0; i < master.length; i++) {
-    rpt_date = master[i][0];
-    count = 0;
-    for (j = 0; j < checkAry.length; j++) {
+  var item = [];
+  for (var i = 0; i < master.length; i++) {
+    var rpt_date = master[i][0];
+    var count = 0;
+    for (var j = 0; j < checkAry.length; j++) {
       if (rpt_date == checkAry[j][0]) {
          count = checkAry[j][1];
          break;
@@ -150,7 +154,7 @@ function createStackedChart(container, data) {
  */
 function createLineChart(container, data) {
     nv.addGraph(function() {
-      var linechart = nv.models.lineWithFocusChart()
+      linechart = nv.models.lineWithFocusChart()
                   .x(function(d) { return d[0] })
                   .y(function(d) { return d[1] })
                   .color(d3.scale.myColors().range());
