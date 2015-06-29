@@ -205,6 +205,11 @@ p {
     font-size: 15px;
 }
 
+.navbar-collapse.pull-right.collapse.in {
+    width: 100%;
+    text-align: right;
+}
+
 .row{
 	margin-left : 0;
 	margin-right: 0;
@@ -305,6 +310,7 @@ p {
     width: 0;
     z-index: 1;
 }
+
 /* handle tabs with full width / height links */
 .menu-item {
 	margin-bottom:2em;
@@ -323,6 +329,10 @@ p {
 
 .pagination {
     font-size: smaller;
+}
+
+.dc-chart svg {
+    margin: auto;
 }
 
 /* Organization Page */
