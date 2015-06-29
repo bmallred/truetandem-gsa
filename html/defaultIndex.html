@@ -1,84 +1,150 @@
 {{ define "title" }}GSA - Home{{ end }}
 {{ define "styles" }}
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.css">
+    <style type="text/css">
+        .nvd3.nv-pie .nv-slice text {
+            fill: white !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+        }
+    </style>
 {{ end }}
 {{ define "content" }}
-<div id="spotlight" class="row vertical-align large">
-    <div class="col-xs-12 text-center fg-white">
-        <h1>GSA Prototype</h1>
-        <a href="#features" class="btn btn-link">View Our Features</a>
-    </div>
-</div>
-<!-- Added link structure to blocks, added arrow icons - Ashley @i72 -->
-<div class="row icon-links">
-    <div class="col-sm-4 col-xs-12 text-center bg-yellow fg-black">
-	    <a href="javascript:;">
-	        <div class="icon-heading"><i class="fa fa-4x fa-line-chart fg-teal"></i></div>
-	        <h3 class="fg-white">Real-time Analysis</h3>
-	        <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-	        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-	        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-	        eam.</p>
-	        <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-teal"></i></div>
-	    </a>
-    </div>
-    <div class="col-sm-4 col-xs-12 text-center bg-teal fg-black">
-	    <a href="javascript:;">
-	        <div class="icon-heading"><i class="fa fa-4x fa-bullseye fg-orange"></i></div>
-	        <h3 class="fg-white">Pinpoint Targeting</h3>
-	        <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-	        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-	        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-	        eam.</p>
-	        <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-orange"></i></div>
-	    </a>
-    </div>
-    <div class="col-sm-4 col-xs-12 text-center bg-orange fg-black">
-	     <a href="javascript:;">
-	        <div class="icon-heading"><i class="fa fa-4x fa-share-alt fg-yellow"></i></div>
-	        <h3 class="fg-white">Easy Collaboration</h3>
-	        <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-	        at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-	        lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-	        eam.</p>
-	        <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-yellow"></i></div>
-	     </a>
-    </div>
-</div>
-<div class="row bg-white" style="min-height: 80vh;">
-    <!-- TODO: Populate with charts and graphs -->
-</div>
-<div class="row bg-orange">
-    <div class="col-xs-12 text-center fg-white">
-        <h3>Customer Experience</h3>
-    </div>
-    <div class="col-sm-4 col-xs-12">
-        <div class="kudos">
-            <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-            at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-            lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-            eam"</em></p>
-            <p style="font-weight: bolder;">- Customer</p>
+    <div id="spotlight" class="row vertical-align large">
+        <div class="col-xs-12 text-center fg-white">
+            <h1>GSA Prototype</h1>
+            <a href="#features" class="btn btn-link">View Our Features</a>
         </div>
     </div>
-    <div class="col-sm-4 col-xs-12">
-        <div class="kudos">
-            <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-            at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-            lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-            eam"</em></p>
-            <p style="font-weight: bolder;">- Customer</p>
+    <div class="row">
+        <div class="col-xs-12 bg-black">
+            <a id="features"></a>
         </div>
     </div>
-    <div class="col-sm-4 col-xs-12">
-        <div class="kudos">
-            <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
-            at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
-            lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
-            eam"</em></p>
-            <p style="font-weight: bolder;">- Customer</p>
+    <!-- Added link structure to blocks, added arrow icons - Ashley @i72 -->
+    <div class="row icon-links">
+        <div class="col-sm-4 col-xs-12 text-center bg-yellow fg-black">
+            <a href="javascript:;">
+                <div class="icon-heading"><i class="fa fa-4x fa-line-chart fg-teal"></i></div>
+                <h3 class="fg-white">Real-time Analysis</h3>
+                <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam.</p>
+                <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-teal"></i></div>
+            </a>
+        </div>
+        <div class="col-sm-4 col-xs-12 text-center bg-teal fg-black">
+            <a href="javascript:;">
+                <div class="icon-heading"><i class="fa fa-4x fa-bullseye fg-orange"></i></div>
+                <h3 class="fg-white">Pinpoint Targeting</h3>
+                <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam.</p>
+                <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-orange"></i></div>
+            </a>
+        </div>
+        <div class="col-sm-4 col-xs-12 text-center bg-orange fg-black">
+             <a href="javascript:;">
+                <div class="icon-heading"><i class="fa fa-4x fa-share-alt fg-yellow"></i></div>
+                <h3 class="fg-white">Easy Collaboration</h3>
+                <p class="text-center col-xs-10 col-xs-offset-1">Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam.</p>
+                <div class="icon-arrow"><i class="fa fa-3x fa-arrow-circle-o-right fg-yellow"></i></div>
+             </a>
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8 col-xs-12">
+            <h3 class="fg-black">FDA Enforcement Reports</h3>
+            <h4 class="fg-teal">Food Recall Enforcement Reports Since 2012</h4>
+            <p>
+            Since 2012, a total of <b><span id="rptcount">0</span></b> Enforcement Reports have been produced by the FDA. These reports
+            provide information pertaining to food recalls.  The Enforcement Report recalls are broken into classifications to reflect the severity of the associated food recall.
+            </p>
+            <ul>
+                <li><b>Class I</b>: (<i>most severe food recall</i>) Dangerous or defective products that predictably could cause serious health problems or death. Examples include: food found to contain botulinum toxin, food with undeclared allergens</li>
+                <li><b>Class II</b>: (<i>moderate severe food recall</i>) Products that might cause a temporary health problem, or pose only a slight threat of a serious nature.</li>
+                <li><b>Class III</b>: (<i>least severe food recall</i>)Products that are unlikely to cause any adverse health reaction, but that violate FDA labeling or manufacturing laws</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8 col-xs-12 text-center">
+            <div id="classbarchart">
+                <svg style="height: 390px;width: 100%;"></svg>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8 col-xs-12">
+            <h4 class="fg-teal"><b><span id="rptcuryearHdr">2015</span></b> Food Recall Enforcement Reports</h4>
+            <p>
+            For <b><span id="rptcuryear">2015</span></b>, a total of <b><span id="rptpiecount">0</span></b> food recalls have occurred.  The following pie charts reflect the classification breakdown of the FDA's food recall reports for <b><span id="rptcuryear">2015</span></b> and the current status of the reports.
+            </p>
+            <p>
+            The FDA provides the following status to provide insight into the state of the recall:
+            </p>
+            <ul>
+                <li><b>On-Going</b>: A recall which is currently in progress.</li>
+                <li><b>Completed</b>: The recall action reaches the point at which the firm has actually retrieved and impounded all outstanding product that could reasonably be expected to be recovered, or has completed all product corrections.</li>
+                <li><b>Terminated</b>: FDA has determined that all reasonable efforts have been made to remove or correct the violative product in accordance with the recall strategy, and proper disposition has been made according to the degree of hazard.</li>
+                <li><b>Pending</b>: Actions that have been determined to be recalls, but that remain in the process of being classified.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-4 col-xs-12 text-center">
+            <h5>2015 Reports By Classification</h5>
+            <div id="classdonutchart1">
+                <svg style="height: 390px;"></svg>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12 text-center">
+            <h5>2015 Reports By Status</h5>
+            <div id="classdonutchart2">
+                <svg style="height:390px;"></svg>
+            </div>
+        </div>
+    </div>
+    <div class="row bg-orange">
+        <div class="col-xs-12 text-center fg-white">
+            <h3>Customer Experience</h3>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <div class="kudos">
+                <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam"</em></p>
+                <p style="font-weight: bolder;">- Customer</p>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <div class="kudos">
+                <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam"</em></p>
+                <p style="font-weight: bolder;">- Customer</p>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <div class="kudos">
+                <p class="text-left"><em>"Lorem ipsum dolor sit amet, qui cu case eruditi qualisque,
+                at nemore convenire voluptatum est. Epicurei adolescens adipiscing an sea,
+                lorem iusto mundi mei ea. Ei cum habemus epicuri. Quas omnis gloriatur id
+                eam"</em></p>
+                <p style="font-weight: bolder;">- Customer</p>
+            </div>
+        </div>
+    </div>
 {{ end }}
 {{ define "scripts" }}
+    <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.1/nv.d3.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/default-index.js"></script>
 {{ end }}

@@ -210,6 +210,7 @@ function AdverseEvents(gridEl) {
             serverSide: true,
             searching: false,
             displayLength: 25,
+            sort: false,
             fnServerData: this.processServerDataResponse,
             columns: [
                 { data: 'safetyreportid' },

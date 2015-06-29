@@ -41,8 +41,18 @@ build:
         # Test the project
         - script:
             name: go test
-            code: |
-                go test ./...
+            code: |-
+                go get golang.org/x/tools/cmd/cover
+                go get github.com/axw/gocov/gocov
+                gocov test . > coverage.json
+
+        # Coverage
+        - script:
+            name: Coverage
+            code: |-
+                go get github.com/matm/gocov-html
+                gocov report coverage.json
+                gocov-html coverage.json > $WERCKER_REPORT_ARTIFACTS_DIR/coverage.html
 deploy:
     steps:
         - setup-go-workspace
