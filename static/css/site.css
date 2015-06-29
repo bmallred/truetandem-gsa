@@ -325,6 +325,8 @@ p {
 /* Analytics */
 .menu-item {
     padding: 2em 0;
+    height: 130px;
+    overflow: none;
 }
 
 .pagination {
