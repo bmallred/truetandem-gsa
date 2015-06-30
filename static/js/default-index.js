@@ -40,12 +40,12 @@ function generateDonutChart(chartname, chartdata) {
     var donutchart = nv.models.pieChart()
       .x(function(d) { return d.label })
       .y(function(d) { return d.value })
-      .showLabels(true) 
+      .showLabels(true)
       .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
       .labelType("key") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-      .donut(true)         
+      .donut(true)
       .donutRatio(0.4)
-      .color(d3.scale.myColors().range());     
+      .color(d3.scale.myColors().range());
 
     d3.select("#"+chartname+" svg")
         .datum(chartdata)
@@ -57,7 +57,7 @@ function generateDonutChart(chartname, chartdata) {
 }
 
 /**
- * Kick of the chart data request and build the charts 
+ * Kick of the chart data request and build the charts
  */
 $(function () {
     retrieveChartData();
@@ -66,7 +66,7 @@ $(function () {
 
 /**
  * Retrieves data via the FDA API and proceeds to format the data
- * for the chart presentation layer, then generates the charts. 
+ * for the chart presentation layer, then generates the charts.
  */
 function retrieveChartData() {
   /**
@@ -80,7 +80,7 @@ function retrieveChartData() {
   }
 
   /**
-   * Execute the asynchronous web service calls and wait for all to 
+   * Execute the asynchronous web service calls and wait for all to
    * complete, so the data can be accurately aggregated.
    */
   $.when( getReportCounts("I"),
@@ -105,22 +105,55 @@ function retrieveChartData() {
                {
                   "key"   : "Class III",
                   "values": val3
-               } 
+               }
            ];
 
         // Initiate the bar chart
         generateBarChart("classbarchart", classdat);
 
+        var total = 0, year = 9999;
+        for (var i = 0; i < val1.length; i++) {
+            var y = parseInt(val1[i].x);
+            var t = val1[i].y;
+
+            if (year > y) {
+                year = y;
+            }
+
+            total += t;
+        }
+        for (var i = 0; i < val2.length; i++) {
+            var y = parseInt(val2[i].x);
+            var t = val2[i].y;
+
+            if (year > y) {
+                year = y;
+            }
+
+            total += t;
+        }
+        for (var i = 0; i < val3.length; i++) {
+            var y = parseInt(val3[i].x);
+            var t = val3[i].y;
+
+            if (year > y) {
+                year = y;
+            }
+
+            total += t;
+        }
+        updateBarDescription(total, year);
+
         // Initiate the donut chart that leverages the same data as the bar chart
-        retrieveDonutChart1Data(val1, val2, val3); 
+        retrieveDonutChart1Data(val1, val2, val3);
   });
 }
 
 /**
  * Format data into expected format for the chart controls.
  * The charts expect an array of [year, count] arrays:
- * 
- *   For example: 
+ *
+ *   For example:
  *   [ [2012, 100], [2013, 200], [2014, 300] ]
  *
  * @param {Object} results
@@ -132,7 +165,7 @@ function parseFDAResult(results) {
     var year = results[i].time;
     var idx = parseInt(year.substring(3,4));
     var countx = parseInt(results[i].count);
-    items [idx] += countx;    
+    items [idx] += countx;
   }
   for (var j = 0; j < items.length; j++) {
     if (items[j] > 0) {
@@ -142,50 +175,50 @@ function parseFDAResult(results) {
       parsedresult.push(item);
     }
   }
-  
+
   return parsedresult;
 }
 
 
 /**
  * Generate a pie chart to reflect the FDA enforcement report
- * classification breakdown.  Will reflect all reports for the 
+ * classification breakdown.  Will reflect all reports for the
  * current year broken down by classification.
  *
  * @param {Object} class1
  * @param {Object} class2
- * @param {Object} class3 
+ * @param {Object} class3
  */
 function retrieveDonutChart1Data(class1, class2, class3) {
   var classIdat   = parseClassCount(class1);
   var classIIdat  = parseClassCount(class2);
   var classIIIdat = parseClassCount(class3);
-  
+
   // aggregate results and update the total marker on the page
   var total = classIdat + classIIdat + classIIIdat;
   var year = parseCurrentYear(classIdat);
-  updatePieDescription(total,year);
+  updatePieDescription(total, year);
 
   var donutData =[
-      { 
+      {
         "label": "Class I",
         "value" : classIdat
-      } , 
-      { 
+      } ,
+      {
         "label": "Class II",
         "value" : classIIdat
-      } , 
-      { 
+      } ,
+      {
         "label": "Class III",
         "value" : classIIIdat
-      } , 
+      } ,
     ];
-    generateDonutChart("classdonutchart1", donutData); 
+    generateDonutChart("classdonutchart1", donutData);
 }
 
 /**
  * Retrieve Pie chart data from the FDA query results
- * to determine the count of records for the current year. 
+ * to determine the count of records for the current year.
  *
  * @param {Object} classdata
  */
@@ -199,7 +232,7 @@ function parseClassCount(classdata) {
 
 /**
  * Retrieve Pie chart data from the FDA query results
- * to determine the current year in the results. 
+ * to determine the current year in the results.
  *
  * @param {Object} classdata
  */
@@ -212,7 +245,18 @@ function parseCurrentYear(classdata) {
 }
 
 /**
- * Retrieve Pie chart data from the FDA query results. 
+ * Retrieve bar chart data from the FDA query results.
+ *
+ * @param {Integer} total
+ * @param {Integer} year
+ */
+function updateBarDescription(total, year) {
+  $(".rptcount").text(total);
+  $(".rptyear").text(year);
+}
+
+/**
+ * Retrieve Pie chart data from the FDA query results.
  *
  * @param {Integer} total
  * @param {Integer} year
