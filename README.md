@@ -8,7 +8,7 @@ TrueTandem – Federal is structured as an Agile Scrum Organization. It is heade
 ## 1.1 Capability Assessment
 Upon the release of the GSA ADS RFQ, TrueTandem’s MetaScrum Chair—Mr. David Tilghman (CSM)—called a MetaScrum meeting together to make a bid / no-bid decision in regards to said RFQ. The central question: Can TrueTandem meet the government’s requirements? 70% of TrueTandem’s portfolio consists of agile software development projects, and 100% of the firm’s developers have experience with open-source languages and tools. Thus, the MetaScrum decided that TrueTandem had the technical capability and budget to respond to the GSA ADS RFQ and build the required prototype. Given time and resource restrictions, it was decided that the firm would focus on Pool 3 of the RFQ. 
 
-## 1.2 Produc Owner (Manager) & Scrum Team Assigned
+## 1.2 Product Owner (Manager) & Scrum Team Assigned
 As the key business decision maker, Mr. Tilghman assigned himself the **Product Manager** (PM) of the GSA ADS Prototype. TrueTandem’s Federal Development Team Lead, Mr. Paul Summers (CSM), was assigned as **Technical Architect** (TA) for the prototype project, and he then selected the following Scrum Team members, based on the prototype requirements:
 
 * Mr. Jay Neighbors – **Writer/Content Designer/Content Strategist**
